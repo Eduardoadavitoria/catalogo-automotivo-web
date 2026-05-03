@@ -1,44 +1,51 @@
 /*
-  ============================================================
-  MOSTRUÁRIO DE VEÍCULOS
-  Arquivo: script.js
-
-  Descrição: Lógica inicial do projeto
-  ============================================================
+  Lógica inicial do projeto
 */
 
-/* Dados simples (mock inicial) */
 const veiculos = [
   {
     id: 1,
     marca: "Volkswagen",
     modelo: "Gol",
-    ano: 2020
+    ano: 2020,
+    preco: 45000
   },
   {
     id: 2,
     marca: "Fiat",
     modelo: "Uno",
-    ano: 2018
+    ano: 2010,
+    preco: 30000
   }
 ];
 
-/* Função para mostrar veículos na tela */
 function renderizarVeiculos(lista) {
   const galeria = document.getElementById("galeriaVeiculos");
+  const semResultados = document.getElementById("semResultados");
 
   galeria.innerHTML = "";
 
+  if (lista.length === 0) {
+    semResultados.style.display = "block";
+    return;
+  }
+
+  semResultados.style.display = "none";
+
   lista.forEach(function (v) {
-    const item = document.createElement("div");
+    const card = document.createElement("div");
+    card.classList.add("card-veiculo");
 
-    item.textContent = v.marca + " " + v.modelo + " - " + v.ano;
+    card.innerHTML = `
+      <h3>${v.marca} ${v.modelo}</h3>
+      <p>Ano: ${v.ano}</p>
+      <p>Preço: R$ ${v.preco}</p>
+    `;
 
-    galeria.appendChild(item);
+    galeria.appendChild(card);
   });
 }
 
-/* Função de busca simples */
 function filtrarVeiculos() {
   const termo = document.getElementById("campoBusca").value.toLowerCase();
 
@@ -53,22 +60,10 @@ function filtrarVeiculos() {
   renderizarVeiculos(resultado);
 }
 
-/* Inicialização */
 document.addEventListener("DOMContentLoaded", function () {
-
-  // Mostra todos os veículos ao carregar
   renderizarVeiculos(veiculos);
 
-  // Evento de busca
-  const campoBusca = document.getElementById("campoBusca");
-  campoBusca.addEventListener("input", filtrarVeiculos);
-
+  document
+    .getElementById("campoBusca")
+    .addEventListener("input", filtrarVeiculos);
 });
-
-/*
-  TODO:
-  - Melhorar layout dos veículos (cards)
-  - Adicionar mais dados (preço, imagem, etc.)
-  - Criar modal de detalhes
-  - Melhorar filtro de busca
-*/
