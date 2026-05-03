@@ -1,11 +1,57 @@
 <!DOCTYPE html>
-<html lang="en">
+<!--
+  ============================================================
+  MOSTRUÁRIO DE VEÍCULOS
+  Arquivo: index.html
+  
+  Autor: Eduardo Almeida da Vitória
+  Descrição: Estrutura inicial do projeto (protótipo em desenvolvimento)
+  ============================================================
+-->
+<html lang="pt-BR">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projeto Veículos</title>
 </head>
+
 <body>
-    <h1>Olá Mundo</h1>
+
+  <!-- Estrutura inicial -->
+  <main id="estoque">
+
+    <h1>Lista de Veículos</h1>
+    <p>Projeto em desenvolvimento...</p>
+
+    <!-- Campo de busca (ainda sem lógica completa) -->
+    <input
+      type="search"
+      id="campoBusca"
+      placeholder="Buscar veículo..."
+    />
+
+    <!-- Área de exibição dos veículos -->
+    <div id="galeriaVeiculos">
+      <!-- TODO: Inserir veículos dinamicamente -->
+    </div>
+
+    <!-- Feedback para busca vazia -->
+    <div id="semResultados" style="display: none;">
+      <p>Nenhum veículo encontrado</p>
+    </div>
+
+  </main>
+
+  <!--
+    TODO:
+    - Criar layout dos cards
+    - Implementar filtro de busca
+    - Adicionar estilização (CSS/Bootstrap)
+    - Integrar com dados (API ou mock)
+  -->
+
+  <script src="script.js"></script>
+
 </body>
 </html>
