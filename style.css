@@ -1,0 +1,55 @@
+/*
+  ============================================================
+  MOSTRUÁRIO DE VEÍCULOS
+  Arquivo: style.css
+
+  Descrição: Estilos iniciais do projeto
+  ============================================================
+*/
+
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Estilo geral da página */
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+/* Título */
+h1 {
+  margin-bottom: 10px;
+}
+
+/* Campo de busca */
+#campoBusca {
+  padding: 8px;
+  width: 100%;
+  max-width: 300px;
+  margin-bottom: 20px;
+}
+
+/* Área dos veículos */
+#galeriaVeiculos {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Mensagem de nenhum resultado */
+#semResultados {
+  margin-top: 20px;
+  color: gray;
+}
+
+/*
+  TODO:
+  - Criar layout de cards
+  - Adicionar cores e identidade visual
+  - Melhorar responsividade
+  - Adicionar animações
+*/
