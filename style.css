@@ -1,46 +1,825 @@
-body {
-  background: #0f1117;
-  color: #fff;
-  font-family: Arial, sans-serif;
+/*
+  ============================================================
+  MOSTRUÁRIO DE VEÍCULOS — ADG Veículos
+  Arquivo: style.css
+  Descrição: Estilos personalizados que complementam o Bootstrap.
+  Paleta escolhida: Tons de carvão escuro (#0f1117), dourado
+  (#c9a227) e branco, remetendo a luxo, sofisticação e confiança —
+  referências visuais de marcas premium do setor automotivo.
+  ============================================================
+*/
+
+/* ============================================================
+   1. VARIÁVEIS CSS GLOBAIS (Custom Properties)
+   Definir cores, fontes e espaçamentos como variáveis permite
+   manter consistência e facilita manutenção futura.
+   Acessadas em todo o arquivo com var(--nome-da-variavel).
+============================================================ */
+:root {
+  /* Paleta principal */
+  --color-bg:          #0f1117;   /* Fundo geral: quase preto */
+  --color-surface:     #181b24;   /* Superfícies de cards e seções */
+  --color-surface-2:   #1e2130;   /* Superfície um nível mais claro */
+  --color-border:      #2a2f42;   /* Bordas sutis */
+ 
+  
+
+  /* Accent / destaque dourado — transmite prestígio */
+  --color-gold:        #c9a227;
+  --color-gold-light:  #e0ba50;
+  --color-gold-dark:   #a07d15;
+
+  /* Texto */
+  --color-text-primary:   #f0f2f8;
+  --color-text-secondary: #8a91a8;
+  --color-text-muted:     #555e78;
+
+  /* Tipografia */
+  --font-display: 'Barlow Condensed', sans-serif;  /* Títulos impactantes */
+  --font-body:    'Lato', sans-serif;              /* Corpo legível */
+
+  /* Espaçamentos e radii */
+  --radius-card:  12px;
+  --radius-btn:   6px;
+  --shadow-card:  0 4px 24px rgba(0, 0, 0, 0.45);
+  --shadow-hover: 0 8px 40px rgba(201, 162, 39, 0.2);
+
+  /* Transições */
+  --transition-fast: 0.2s ease;
+  --transition-med:  0.35s ease;
 }
 
-.vehicle-card {
-  background: #1a1d25;
-  border-radius: 10px;
+
+/* ============================================================
+   2. RESET E BASE GLOBAL
+   Aplica a fonte e cor padrão a todos os elementos.
+   O "box-sizing: border-box" garante que padding e border
+   não extrapolem a largura definida — boa prática essencial.
+============================================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth; /* Rola suavemente ao clicar em âncoras (#estoque) */
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased; /* Melhor renderização de texto em WebKit */
+}
+
+/* Remove o sublinhado padrão de links e herda cor do pai */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+
+/* ============================================================
+   3. NAVBAR
+   Sobrescreve os estilos padrão do Bootstrap para o tema escuro.
+============================================================ */
+#mainNavbar {
+  background-color: rgba(15, 17, 23, 0.95);
+  border-bottom: 1px solid var(--color-border);
+  padding: 0.9rem 0;
+
+  /* Efeito blur: cria sensação de glassmorphism moderno */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  /* Fixa a navbar no topo ao rolar a página */
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* Logotipo */
+.brand-name {
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--color-text-primary);
+  text-transform: uppercase;
+}
+
+.brand-accent {
+  color: var(--color-gold); /* Palavra "Prime" em dourado */
+}
+
+.brand-icon {
+  font-size: 1.5rem;
+  color: var(--color-gold);
+}
+
+/* Links do menu */
+.navbar-nav .nav-link {
+  color: var(--color-text-secondary);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.5rem 0.75rem;
+  transition: color var(--transition-fast);
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+  color: var(--color-gold);
+}
+
+/* Botão de telefone na navbar */
+.btn-nav {
+  background: transparent;
+  border: 1px solid var(--color-gold) !important;
+  border-radius: var(--radius-btn);
+  color: var(--color-gold) !important;
+  padding: 0.4rem 1rem !important;
+  transition: all var(--transition-fast);
+}
+
+.btn-nav:hover {
+  background: var(--color-gold);
+  color: var(--color-bg) !important;
+}
+
+/* Botão hambúrguer (mobile): adapta ao tema escuro */
+.navbar-toggler {
+  border-color: var(--color-border);
+}
+
+.navbar-toggler-icon {
+  filter: invert(1);
+}
+
+
+/* ============================================================
+   4. SEÇÃO HERO
+   Fundo com imagem placeholder escurecida + overlay gradiente.
+   O overlay garante legibilidade do texto sobre qualquer imagem.
+============================================================ */
+.hero-section {
+  position: relative;
+  min-height: 92vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /*
+    Imagem de fundo via URL pública gratuita (Unsplash).
+    Em produção, substituir por imagem real da loja.
+    object-fit: cover garante que a imagem cubra todo o espaço.
+  */
+  background-image: url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=1600&q=80');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; /* Efeito parallax sutil ao rolar */
   overflow: hidden;
 }
 
+/* Overlay escuro sobre a imagem de fundo */
+.hero-overlay {
+  position: absolute;
+  inset: 0; /* equivalente a top:0; right:0; bottom:0; left:0 */
+  background: linear-gradient(
+    135deg,
+    rgba(10, 12, 18, 0.88) 0%,
+    rgba(10, 12, 18, 0.70) 60%,
+    rgba(10, 12, 18, 0.85) 100%
+  );
+}
+
+.hero-content {
+  position: relative; /* Garante que fique acima do overlay */
+  z-index: 1;
+  max-width: 780px;
+  padding: 2rem 1rem;
+  animation: fadeInUp 0.9s ease both; /* Animação de entrada */
+}
+
+/* Linha de texto pequena acima do título */
+.hero-eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  margin-bottom: 1rem;
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.8rem, 7vw, 5.5rem); /* Tamanho fluido conforme viewport */
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--color-text-primary);
+}
+
+/* Frase destacada em dourado dentro do título */
+.hero-highlight {
+  color: var(--color-gold);
+  display: inline-block;
+  position: relative;
+}
+
+.hero-subtitle {
+  font-size: 1.05rem;
+  color: var(--color-text-secondary);
+  max-width: 520px;
+  margin: 1.5rem auto 0;
+}
+
+/* Botão primário personalizado (CTA — Call To Action) */
+.btn-primary-custom {
+  background: var(--color-gold);
+  border: none;
+  color: var(--color-bg);
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.75rem 2.2rem;
+  border-radius: var(--radius-btn);
+  transition: all var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+}
+
+.btn-primary-custom:hover {
+  background: var(--color-gold-light);
+  color: var(--color-bg);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(201, 162, 39, 0.4);
+}
+
+.btn-primary-custom:active {
+  transform: translateY(0);
+}
+
+
+/* ============================================================
+   5. SEÇÃO ESTOQUE
+============================================================ */
+.section-estoque {
+  padding: 6rem 0;
+  background-color: var(--color-bg);
+}
+
+/* Cabeçalho de seção */
+.section-tag {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  border: 1px solid var(--color-gold-dark);
+  padding: 0.25rem 0.85rem;
+  border-radius: 2rem;
+  background: rgba(201, 162, 39, 0.08);
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--color-text-primary);
+  margin-top: 0.75rem;
+}
+
+.section-subtitle {
+  color: var(--color-text-secondary);
+  font-size: 1rem;
+  max-width: 520px;
+  margin: 0.5rem auto 0;
+}
+
+
+/* ============================================================
+   6. BARRA DE BUSCA
+   Estilização personalizada do <input> de busca.
+   O ícone de lupa é posicionado absolutamente dentro do wrapper.
+============================================================ */
+.search-wrapper {
+  position: relative;
+}
+
+.search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-gold);
+  font-size: 1rem;
+  z-index: 2; /* Mantém acima do input */
+  pointer-events: none; /* Clique passa direto para o input */
+}
+
+.search-input {
+  background-color: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+  padding: 0.85rem 1rem 0.85rem 2.8rem; /* Espaço à esquerda para o ícone */
+  border-radius: var(--radius-btn);
+  font-size: 1rem;
+  width: 100%;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+/* Remove o fundo branco padrão do Bootstrap ao focar */
+.search-input:focus {
+  background-color: var(--color-surface-2);
+  color: var(--color-text-primary);
+  border-color: var(--color-gold);
+  box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.15);
+  outline: none;
+}
+
+/* Cor do placeholder */
+.search-input::placeholder {
+  color: var(--color-text-muted);
+}
+
+
+/* ============================================================
+   7. CARDS DE VEÍCULOS
+   Cada card é um Bootstrap Card personalizado.
+   A classe .vehicle-card é adicionada pelo JavaScript ao gerar
+   cada card dinamicamente.
+============================================================ */
+.vehicle-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  transition: transform var(--transition-med), box-shadow var(--transition-med), border-color var(--transition-med);
+  height: 100%; /* Garante que todos os cards tenham a mesma altura na linha */
+  display: flex;
+  flex-direction: column;
+
+  /* Animação de entrada ao ser inserido no DOM */
+  animation: fadeInUp 0.5s ease both;
+}
+
+.vehicle-card:hover {
+  transform: translateY(-6px); /* Sobe sutilmente ao passar o mouse */
+  box-shadow: var(--shadow-hover);
+  border-color: var(--color-gold-dark);
+}
+
+/* Container da imagem do veículo */
 .card-img-wrapper {
   position: relative;
+  overflow: hidden;
+  height: 210px; /* Altura fixa para uniformidade visual */
 }
 
 .card-img-wrapper img {
   width: 100%;
-  height: 200px;
-  object-fit: cover;
+  height: 100%;
+  object-fit: cover; /* Corta a imagem para preencher o espaço sem distorcer */
+  display: block;
+  transition: transform 0.5s ease;
 }
 
+/* Zoom na imagem ao passar o mouse no card */
+.vehicle-card:hover .card-img-wrapper img {
+  transform: scale(1.06);
+}
+
+/* Badge de marca sobre a imagem */
+.card-badge {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  background: rgba(10, 12, 18, 0.85);
+  border: 1px solid var(--color-gold-dark);
+  color: var(--color-gold);
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.65rem;
+  border-radius: 4px;
+  backdrop-filter: blur(4px);
+}
+
+/* Corpo do card */
 .card-body-custom {
-  padding: 15px;
+  padding: 1.25rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1; /* Empurra o rodapé do card para baixo */
 }
 
 .card-modelo {
-  font-size: 18px;
-  margin-bottom: 10px;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--color-text-primary);
+  line-height: 1.2;
+  margin-bottom: 0.6rem;
+}
+
+/* Lista de especificações (ano, km) */
+.card-specs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.spec-item {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.82rem;
+  color: var(--color-text-secondary);
+}
+
+.spec-item i {
+  color: var(--color-gold);
+  font-size: 0.85rem;
+}
+
+/* Linha divisória entre especificações e preço */
+.card-divider {
+  height: 1px;
+  background: var(--color-border);
+  margin: 0.75rem 0;
+}
+
+/* Rodapé do card: preço + botão */
+.card-footer-custom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: auto; /* Gruda no fundo do card */
 }
 
 .card-price {
-  color: gold;
-  font-weight: bold;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--color-gold);
+  line-height: 1;
 }
 
-/* TAG IMAGEM TESTE */
-.img-teste-tag {
-  position: absolute;
-  bottom: 8px;
-  right: 8px;
-  background: rgba(0,0,0,0.7);
-  font-size: 10px;
-  padding: 3px 6px;
+.card-price-label {
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  display: block;
+  margin-bottom: 0.2rem;
+}
+
+/* Botão "Ver Detalhes" dentro do card */
+.btn-card {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 0.45rem 1rem;
+  border-radius: var(--radius-btn);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.btn-card:hover {
+  border-color: var(--color-gold);
+  color: var(--color-gold);
+  background: rgba(201, 162, 39, 0.07);
+}
+
+
+/* ============================================================
+   8. SEÇÃO DIFERENCIAIS
+============================================================ */
+.section-diferenciais {
+  padding: 5rem 0;
+  background-color: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.diferencial-item {
+  padding: 1.5rem;
+}
+
+.diferencial-icon {
+  font-size: 2rem;
+  color: var(--color-gold);
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.diferencial-item h5 {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-primary);
+  margin-bottom: 0.4rem;
+}
+
+.diferencial-item p {
+  font-size: 0.88rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+
+/* ============================================================
+   9. SEÇÃO CONTATO
+============================================================ */
+.section-contato {
+  padding: 6rem 0;
+  background-color: var(--color-bg);
+}
+
+.contact-list {
+  list-style: none;
+  padding: 0;
+}
+
+.contact-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--color-text-secondary);
+  font-size: 0.95rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.contact-list li i {
+  color: var(--color-gold);
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+/* Card do formulário de contato */
+.contact-form-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  padding: 2rem;
+}
+
+.contact-form-card h5 {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Sobrescreve inputs do Bootstrap para o tema escuro */
+.contact-form-card .form-control {
+  background-color: var(--color-surface-2);
+  border-color: var(--color-border);
+  color: var(--color-text-primary);
+  border-radius: var(--radius-btn);
+}
+
+.contact-form-card .form-control:focus {
+  background-color: var(--color-surface-2);
+  border-color: var(--color-gold);
+  color: var(--color-text-primary);
+  box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.15);
+}
+
+.contact-form-card .form-control::placeholder {
+  color: var(--color-text-muted);
+}
+
+.contact-form-card .form-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.4rem;
+}
+
+
+/* ============================================================
+   10. MODAL DE DETALHES
+============================================================ */
+.modal-custom {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  color: var(--color-text-primary);
+}
+
+.modal-custom .modal-header {
+  background: var(--color-surface-2);
+  border-radius: var(--radius-card) var(--radius-card) 0 0;
+  padding: 1.25rem 1.5rem;
+}
+
+.modal-custom .modal-title {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+.modal-detail-img {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.modal-specs-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Cada item de especificação no modal */
+.modal-spec-box {
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 0.85rem 1rem;
+}
+
+.modal-spec-box span {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.2rem;
+}
+
+.modal-spec-box strong {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.modal-price-box {
+  background: linear-gradient(135deg, rgba(201, 162, 39, 0.12), rgba(201, 162, 39, 0.05));
+  border: 1px solid var(--color-gold-dark);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.modal-price-value {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--color-gold);
+  line-height: 1;
+}
+
+.modal-price-label {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+
+/* ============================================================
+   11. RODAPÉ
+============================================================ */
+.site-footer {
+  background-color: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  padding: 2.5rem 0;
+}
+
+.footer-brand {
+  font-size: 1.4rem;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.footer-tagline {
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.footer-copy,
+.footer-dev {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  margin: 0;
+  line-height: 1.7;
+}
+
+
+/* ============================================================
+   12. ANIMAÇÕES CSS
+   @keyframes definem a sequência de movimento/opacidade.
+   A animação "fadeInUp" é usada nos cards e no hero.
+============================================================ */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Atraso escalonado para cada card (staggered animation).
+   Os atributos são aplicados inline pelo JavaScript. */
+.vehicle-card:nth-child(1) { animation-delay: 0.05s; }
+.vehicle-card:nth-child(2) { animation-delay: 0.10s; }
+.vehicle-card:nth-child(3) { animation-delay: 0.15s; }
+.vehicle-card:nth-child(4) { animation-delay: 0.20s; }
+.vehicle-card:nth-child(5) { animation-delay: 0.25s; }
+.vehicle-card:nth-child(6) { animation-delay: 0.30s; }
+.vehicle-card:nth-child(7) { animation-delay: 0.35s; }
+.vehicle-card:nth-child(8) { animation-delay: 0.40s; }
+
+
+/* ============================================================
+   13. UTILITÁRIOS E AJUSTES RESPONSIVOS
+   Media queries adicionam ajustes finos para telas maiores.
+   O Bootstrap já cuida da maioria com seu sistema de grid,
+   mas personalizações visuais precisam ser feitas manualmente.
+============================================================ */
+
+/* Telas pequenas: padding reduzido nas seções */
+@media (max-width: 576px) {
+  .section-estoque,
+  .section-contato {
+    padding: 4rem 0;
+  }
+
+  .hero-section {
+    background-attachment: scroll; /* Parallax desativado no mobile (performance) */
+  }
+
+  .modal-specs-grid {
+    grid-template-columns: 1fr; /* 1 coluna no mobile */
+  }
+}
+
+/* Scrollbar personalizada (navegadores WebKit: Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
   border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-gold-dark);
+}
+
+/* Seleção de texto com cor da marca */
+::selection {
+  background: var(--color-gold);
+  color: var(--color-bg);
 }
