@@ -1,3 +1,4 @@
+<!DOCTYPE html>
   <!-- 
   ============================================================
   MOSTRUÁRIO DE VEÍCULOS
@@ -7,346 +8,307 @@
   Descrição: Estrutura inicial do projeto (protótipo em desenvolvimento)
   ============================================================ 
 -->
-<!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
   <meta charset="UTF-8" />
+  <!-- Meta viewport: essencial para responsividade em dispositivos móveis (Mobile First) -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ADGVEICULOS | Seminovos de Qualidade</title>
 
-  <title>ADG Veículos | Carros de Qualidade</title>
-
+  <!-- Bootstrap 5.3 via CDN: fornece o sistema de grid, Navbar, Cards e demais componentes -->
   <link rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
 
+  <!-- Bootstrap Icons: biblioteca de ícones vetoriais compatível com Bootstrap -->
   <link rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
 
+  <!-- Google Fonts: Barlow Condensed (display) + Lato (corpo) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-
-  <link
-    href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Lato:wght@300;400;700&display=swap"
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Lato:wght@300;400;700&display=swap"
     rel="stylesheet" />
 
+  <!-- Folha de estilo personalizada (carregada após Bootstrap para sobrescrever quando necessário) -->
   <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
 
-  <nav class="navbar navbar-expand-lg" id="mainNavbar">
+  <!-- =====================================================
+    COMPONENTE: NAVBAR (Barra de Navegação)
+    Bootstrap component: <nav class="navbar">
+    Funcionalidade: Apresenta a marca e links de navegação.
+    O atributo "data-bs-toggle/target" controla o menu hambúrguer
+    em telas pequenas (comportamento nativo do Bootstrap JS).
+  ====================================================== -->
+  <nav class="navbar navbar-expand-lg" id="mainNavbar" aria-label="Navegação principal">
     <div class="container">
 
+      <!-- Logotipo / Nome da empresa -->
       <a class="navbar-brand d-flex align-items-center gap-2" href="#">
         <i class="bi bi-car-front-fill brand-icon"></i>
-
-        <span class="brand-name">
-          ADG <span class="brand-accent">Veículos</span>
-        </span>
+        <span class="brand-name">ADG<span class="brand-accent">Veiculos</span></span>
       </a>
 
+      <!-- Botão hambúrguer: aparece somente em telas < lg (Mobile First) -->
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-        data-bs-target="#navbarMenu">
+        data-bs-target="#navbarMenu" aria-controls="navbarMenu"
+        aria-expanded="false" aria-label="Alternar menu">
         <span class="navbar-toggler-icon"></span>
       </button>
 
+      <!-- Menu colapsável -->
       <div class="collapse navbar-collapse" id="navbarMenu">
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center gap-lg-2">
-
-          <li class="nav-item">
-            <a class="nav-link active" href="#">Início</a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link" href="#estoque">Estoque</a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link" href="#contato">Contato</a>
-          </li>
-
+          <li class="nav-item"><a class="nav-link active" href="#">Início</a></li>
+          <li class="nav-item"><a class="nav-link" href="#estoque">Estoque</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contato">Contato</a></li>
           <li class="nav-item">
             <a class="nav-link btn-nav" href="tel:+5527998956099">
-              <i class="bi bi-telephone-fill me-1"></i>
-              (27) 99895-6099
+              <i class="bi bi-telephone-fill me-1"></i>(27) 99895-6099
             </a>
           </li>
-
         </ul>
       </div>
-
     </div>
   </nav>
+  <!-- FIM: NAVBAR -->
 
 
-  <header class="hero-section">
+  <!-- =====================================================
+    SEÇÃO: HERO (Cabeçalho de destaque)
+    Propósito: Chamar atenção do usuário e transmitir
+    a proposta de valor da loja logo na primeira dobra.
+  ====================================================== -->
+  <header class="hero-section" role="banner">
     <div class="hero-overlay"></div>
-
     <div class="container hero-content text-center">
-
-      <p class="hero-eyebrow">
-        Veículos com procedência garantida
-      </p>
-
-      <h1 class="hero-title">
-        Encontre o carro<br />
-        <span class="hero-highlight">ideal para você</span>
-      </h1>
-
-      <p class="hero-subtitle">
-        Veículos selecionados, financiamento facilitado e atendimento especializado.
-      </p>
-
+      <p class="hero-eyebrow">Seminovos com procedência garantida</p>
+      <h1 class="hero-title">Encontre o carro<br /><span class="hero-highlight">perfeito para você</span></h1>
+      <p class="hero-subtitle">Mais de 50 modelos disponíveis. Financiamento facilitado e revisão inclusa.</p>
+      <!-- Âncora suave: ao clicar, rola até a seção de estoque -->
       <a href="#estoque" class="btn btn-primary-custom btn-lg mt-3">
-        Ver Estoque
-        <i class="bi bi-arrow-down ms-2"></i>
+        Ver Estoque <i class="bi bi-arrow-down ms-2"></i>
       </a>
-
     </div>
   </header>
+  <!-- FIM: HERO -->
 
 
+  <!-- =====================================================
+    SEÇÃO PRINCIPAL: ESTOQUE DE VEÍCULOS
+    Elemento <main>: indica ao navegador/leitores de tela
+    que este é o conteúdo principal da página (acessibilidade).
+  ====================================================== -->
   <main id="estoque" class="section-estoque">
-
     <div class="container">
 
+      <!-- Cabeçalho da seção -->
       <div class="section-header text-center mb-5">
-
-        <span class="section-tag">
-          Nosso Estoque
-        </span>
-
-        <h2 class="section-title">
-          Veículos Disponíveis
-        </h2>
-
-        <p class="section-subtitle">
-          Qualidade, procedência e confiança em cada veículo.
-        </p>
-
+        <span class="section-tag">Nosso Estoque</span>
+        <h2 class="section-title">Veículos Disponíveis</h2>
+        <p class="section-subtitle">Todos os veículos passam por inspeção de 150 pontos antes da venda.</p>
       </div>
 
-
+      <!-- =================================================
+        COMPONENTE: BARRA DE BUSCA
+        Funcionamento: O evento "input" no JavaScript escuta
+        qualquer digitação em tempo real e chama a função
+        filtrarVeiculos(), sem necessidade de recarregar a página.
+        O atributo "id='campoBusca'" é o ponto de ligação com o JS.
+      ================================================== -->
       <div class="row justify-content-center mb-5">
-
         <div class="col-12 col-md-8 col-lg-6">
-
           <div class="search-wrapper">
-
             <i class="bi bi-search search-icon"></i>
-
             <input
               type="search"
               id="campoBusca"
               class="form-control search-input"
               placeholder="Buscar por marca, modelo ou ano..."
+              aria-label="Buscar veículos"
+              autocomplete="off"
             />
-
           </div>
-
         </div>
-
       </div>
+      <!-- FIM: BARRA DE BUSCA -->
 
+      <!-- =================================================
+        GRADE DE CARDS (Bootstrap Grid System)
+        Sistema de colunas responsivo:
+        - col-12:    1 card por linha em telas xs (< 576px)
+        - col-sm-6:  2 cards por linha em telas sm (≥ 576px)
+        - col-lg-4:  3 cards por linha em telas lg (≥ 992px)
+        - col-xl-3:  4 cards por linha em telas xl (≥ 1200px)
 
-      <div class="row g-4" id="galeriaVeiculos"></div>
+        Os cards são gerados DINAMICAMENTE pelo JavaScript
+        (script.js → função renderizarVeiculos).
+        O atributo "id='galeriaVeiculos'" é usado pelo JS
+        para injetar o HTML dos cards neste container.
+      ================================================== -->
+      <div class="row g-4" id="galeriaVeiculos">
+        <!-- Cards inseridos dinamicamente via JavaScript -->
+      </div>
+      <!-- FIM: GRADE DE CARDS -->
 
-
+      <!-- =================================================
+        MENSAGEM DE "NENHUM RESULTADO"
+        Exibida pelo JavaScript quando a busca não retorna
+        nenhum veículo. Inicialmente oculta (d-none).
+      ================================================== -->
       <div id="semResultados" class="text-center py-5 d-none">
         <i class="bi bi-search display-3 text-muted"></i>
-
-        <h4 class="mt-3 text-muted">
-          Nenhum veículo encontrado
-        </h4>
-
-        <p class="text-muted">
-          Tente buscar por outro termo.
-        </p>
+        <h4 class="mt-3 text-muted">Nenhum veículo encontrado</h4>
+        <p class="text-muted">Tente buscar por outro termo.</p>
       </div>
+      <!-- FIM: MENSAGEM -->
 
     </div>
-
   </main>
+  <!-- FIM: SEÇÃO PRINCIPAL -->
 
 
-  <section class="section-diferenciais">
-
+  <!-- =====================================================
+    SEÇÃO: DIFERENCIAIS
+    Reforça a credibilidade da loja com ícones e texto.
+  ====================================================== -->
+  <section class="section-diferenciais" aria-label="Diferenciais da loja">
     <div class="container">
-
       <div class="row g-4 text-center">
-
         <div class="col-6 col-md-3">
           <div class="diferencial-item">
             <i class="bi bi-shield-check-fill diferencial-icon"></i>
             <h5>Garantia</h5>
-            <p>Segurança e confiança em sua compra</p>
+            <p>6 meses de garantia em todos os veículos</p>
           </div>
         </div>
-
         <div class="col-6 col-md-3">
           <div class="diferencial-item">
             <i class="bi bi-cash-coin diferencial-icon"></i>
             <h5>Financiamento</h5>
-            <p>Parcelas facilitadas e aprovação rápida</p>
+            <p>Aprovação rápida com as melhores taxas</p>
           </div>
         </div>
-
         <div class="col-6 col-md-3">
           <div class="diferencial-item">
             <i class="bi bi-tools diferencial-icon"></i>
-            <h5>Revisão</h5>
-            <p>Veículos revisados e preparados</p>
+            <h5>Revisão Inclusa</h5>
+            <p>Revisão completa antes da entrega</p>
           </div>
         </div>
-
         <div class="col-6 col-md-3">
           <div class="diferencial-item">
             <i class="bi bi-file-earmark-check-fill diferencial-icon"></i>
             <h5>Documentação</h5>
-            <p>Tudo pronto para transferência</p>
+            <p>Transferência e IPVA sem pendências</p>
           </div>
         </div>
-
       </div>
-
     </div>
-
   </section>
+  <!-- FIM: DIFERENCIAIS -->
 
 
-  <section id="contato" class="section-contato">
-
+  <!-- =====================================================
+    SEÇÃO: CONTATO
+  ====================================================== -->
+  <section id="contato" class="section-contato" aria-label="Seção de contato">
     <div class="container">
-
       <div class="row align-items-center g-5">
-
         <div class="col-12 col-lg-6">
-
-          <span class="section-tag">
-            Fale Conosco
-          </span>
-
-          <h2 class="section-title mt-2">
-            Pronto para fechar negócio?
-          </h2>
-
-          <p class="mt-3 text-muted">
-            Nossa equipe está pronta para atender você.
-          </p>
-
+          <span class="section-tag">Fale Conosco</span>
+          <h2 class="section-title mt-2">Pronto para fazer um bom negócio?</h2>
+          <p class="mt-3 text-muted">Nossa equipe está disponível de segunda a sábado, das 8h às 18h, para tirar todas as suas dúvidas.</p>
           <ul class="contact-list mt-4">
-            <li><i class="bi bi-geo-alt-fill"></i> Fundão - ES</li>
+            <li><i class="bi bi-geo-alt-fill"></i> Av. Jose Agostini, 182, Centro, Fundão - ES</li>
             <li><i class="bi bi-telephone-fill"></i> (27) 99895-6099</li>
-            <li><i class="bi bi-envelope-fill"></i> contato@adgveiculos.com</li>
+            <li><i class="bi bi-envelope-fill"></i> adgveiculos@hotmail.com.</li>
           </ul>
-
         </div>
-
-
         <div class="col-12 col-lg-6">
-
+          <!-- Formulário de contato (apenas visual no protótipo) -->
           <div class="contact-form-card">
-
-            <h5 class="mb-4">
-              Deixe seu contato
-            </h5>
-
+            <h5 class="mb-4">Deixe seu contato</h5>
             <div class="mb-3">
-              <label class="form-label">Nome completo</label>
-              <input type="text" class="form-control" placeholder="Seu nome" />
+              <label for="nomeContato" class="form-label">Nome completo</label>
+              <input type="text" class="form-control" id="nomeContato" placeholder="Seu nome" />
             </div>
-
             <div class="mb-3">
-              <label class="form-label">Telefone</label>
-              <input type="tel" class="form-control" placeholder="(27) 99999-9999" />
+              <label for="telefoneContato" class="form-label">Telefone / WhatsApp</label>
+              <input type="tel" class="form-control" id="telefoneContato" placeholder="(27) 99999-9999" />
             </div>
-
             <div class="mb-3">
-              <label class="form-label">Mensagem</label>
-              <textarea class="form-control" rows="3"
+              <label for="mensagemContato" class="form-label">Mensagem</label>
+              <textarea class="form-control" id="mensagemContato" rows="3"
                 placeholder="Tenho interesse em..."></textarea>
             </div>
-
             <button type="button" class="btn btn-primary-custom w-100">
-              Enviar Mensagem
-              <i class="bi bi-send-fill ms-2"></i>
+              Enviar Mensagem <i class="bi bi-send-fill ms-2"></i>
             </button>
-
           </div>
-
         </div>
-
       </div>
-
     </div>
-
   </section>
+  <!-- FIM: CONTATO -->
 
 
-  <footer class="site-footer">
-
+  <!-- =====================================================
+    RODAPÉ (Footer)
+    Elemento semântico <footer>: identifica o rodapé da página.
+  ====================================================== -->
+  <footer class="site-footer" role="contentinfo">
     <div class="container">
-
       <div class="row align-items-center">
-
         <div class="col-12 col-md-6 text-center text-md-start mb-3 mb-md-0">
-
-          <span class="brand-name footer-brand">
-            ADG <span class="brand-accent">Veículos</span>
-          </span>
-
-          <p class="footer-tagline">
-            Seminovos de confiança.
-          </p>
-
+          <span class="brand-name footer-brand">ADG<span class="brand-accent">Veiculos</span></span>
+          <p class="footer-tagline">Seminovos de confiança desde 2010.</p>
         </div>
-
         <div class="col-12 col-md-6 text-center text-md-end">
-
-          <p class="footer-copy">
-            &copy; 2026 Todos os direitos reservados.
-          </p>
-
+          <p class="footer-copy">&copy; 2025 ADGVEICULOS. Todos os direitos reservados.</p>
+          <p class="footer-dev">Protótipo desenvolvido para Estágio Obrigatório — ADS</p>
+          <!-- Botão admin discreto: visível apenas para quem sabe que existe -->
+          <a href="admin.html" class="btn-admin-discreto" title="Acesso Administrativo">
+            <i class="bi bi-shield-lock"></i>
+          </a>
         </div>
-
       </div>
-
     </div>
-
   </footer>
+  <!-- FIM: FOOTER -->
 
 
-  <div class="modal fade" id="modalVeiculo" tabindex="-1">
-
+  <!-- =====================================================
+    MODAL DE DETALHES DO VEÍCULO
+    Bootstrap Modal: exibido ao clicar em "Ver Detalhes" em
+    qualquer card. O conteúdo é preenchido dinamicamente pelo JS.
+  ====================================================== -->
+  <div class="modal fade" id="modalVeiculo" tabindex="-1" aria-labelledby="modalVeiculoLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
-
       <div class="modal-content modal-custom">
-
         <div class="modal-header border-0">
-
-          <h5 class="modal-title fw-bold" id="modalVeiculoLabel">
-            Detalhes do Veículo
-          </h5>
-
-          <button
-            type="button"
-            class="btn-close btn-close-white"
-            data-bs-dismiss="modal">
-          </button>
-
+          <h5 class="modal-title fw-bold" id="modalVeiculoLabel">Detalhes do Veículo</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
         </div>
-
-        <div class="modal-body" id="modalVeiculoBody"></div>
-
+        <div class="modal-body" id="modalVeiculoBody">
+          <!-- Preenchido dinamicamente pelo JavaScript -->
+        </div>
       </div>
-
     </div>
-
   </div>
+  <!-- FIM: MODAL -->
 
 
+  <!-- =====================================================
+    SCRIPTS (carregados no final do <body> por performance)
+    1. Bootstrap JS Bundle: necessário para Navbar colapsável e Modal
+    2. script.js: lógica de dados e filtragem (nosso arquivo personalizado)
+    Ordem importa: Bootstrap deve vir antes do nosso script.
+  ====================================================== -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
   <script src="script.js"></script>
 
 </body>

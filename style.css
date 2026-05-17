@@ -1,6 +1,6 @@
 /*
   ============================================================
-  MOSTRUÁRIO DE VEÍCULOS — ADG Veículos
+  MOSTRUÁRIO DE VEÍCULOS — ADGVeiculos
   Arquivo: style.css
   Descrição: Estilos personalizados que complementam o Bootstrap.
   Paleta escolhida: Tons de carvão escuro (#0f1117), dourado
@@ -21,8 +21,6 @@
   --color-surface:     #181b24;   /* Superfícies de cards e seções */
   --color-surface-2:   #1e2130;   /* Superfície um nível mais claro */
   --color-border:      #2a2f42;   /* Bordas sutis */
- 
-  
 
   /* Accent / destaque dourado — transmite prestígio */
   --color-gold:        #c9a227;
@@ -823,3 +821,89 @@ a {
   background: var(--color-gold);
   color: var(--color-bg);
 }
+
+/* ============================================================
+   BOTÃO ADMIN DISCRETO (rodapé do site)
+   Pequeno ícone de cadeado. Sem texto, sem destaque.
+   Quem não sabe que existe, não percebe.
+============================================================ */
+.btn-admin-discreto {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+  margin-top: 0.5rem;
+  transition: all 0.2s ease;
+  opacity: 0.45;
+}
+
+.btn-admin-discreto:hover {
+  opacity: 1;
+  border-color: var(--color-gold-dark);
+  color: var(--color-gold);
+  background: rgba(201, 162, 39, 0.07);
+}
+
+/* ============================================================
+   BADGE DE FOTOS NOS CARDS
+   Exibido quando o veículo tem mais de uma foto.
+============================================================ */
+.card-badge-fotos {
+  position: absolute;
+  bottom: 0.6rem;
+  right: 0.6rem;
+  background: rgba(10, 12, 18, 0.82);
+  border: 1px solid rgba(201, 162, 39, 0.35);
+  color: var(--color-gold);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 0.18rem 0.55rem;
+  border-radius: 4px;
+  backdrop-filter: blur(4px);
+}
+
+/* ============================================================
+   MODAL — GALERIA DE FOTOS
+   Estilos do carrossel Bootstrap dentro do modal.
+============================================================ */
+.modal-detail-img {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  display: block;
+}
+
+.modal-carousel-indicators {
+  bottom: -1.5rem !important;
+}
+
+.modal-carousel-indicators [data-bs-target] {
+  background-color: var(--color-gold) !important;
+  opacity: 0.4;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+}
+
+.modal-carousel-indicators .active {
+  opacity: 1 !important;
+}
+
+.modal-foto-contador {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  margin-bottom: 1.25rem;
+  margin-top: 1.8rem;
+  text-align: center;
+}
+
