@@ -1,30 +1,15 @@
 <!DOCTYPE html>
-<!--
-  ============================================================
-  ADGVEICULOS — Painel Administrativo
-  Arquivo: admin.html
-  Descrição: Página de administração com:
-    - Tela de login (CPF + Senha) com validação
-    - Painel CRUD de veículos (Criar, Listar, Editar, Excluir)
-    - Dados persistidos via localStorage (simulação de BD)
-  ============================================================
--->
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ADGVEICULOS | Painel Admin</title>
-
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
-
   <style>
-    /* ============================================================
-       VARIÁVEIS CSS — mesma paleta do site principal para coesão
-    ============================================================ */
     :root {
       --color-bg:          #0f1117;
       --color-surface:     #181b24;
@@ -36,954 +21,195 @@
       --color-gold-dark:   #a07d15;
       --color-danger:      #e05555;
       --color-success:     #3dba7c;
+      --color-warning:     #e07a2a;
+      --color-blue:        #7eb3f5;
       --color-text-primary:   #f0f2f8;
       --color-text-secondary: #8a91a8;
       --color-text-muted:     #555e78;
       --font-display: 'Barlow Condensed', sans-serif;
       --font-body:    'Lato', sans-serif;
-      --radius:       10px;
-      --transition:   0.2s ease;
+      --radius: 10px;
+      --t: 0.2s ease;
     }
-
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-
-    body {
-      font-family: var(--font-body);
-      background-color: var(--color-bg);
-      color: var(--color-text-primary);
-      min-height: 100vh;
-      -webkit-font-smoothing: antialiased;
-    }
-
+    body { font-family: var(--font-body); background: var(--color-bg); color: var(--color-text-primary); min-height: 100vh; -webkit-font-smoothing: antialiased; }
     a { text-decoration: none; color: inherit; }
 
-    /* ============================================================
-       TELA DE LOGIN
-       Ocupa 100vh centralizado. Oculta o painel até autenticar.
-    ============================================================ */
+    /* ---- LOGIN ---- */
     #telaLogin {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background:
-        radial-gradient(ellipse at 20% 50%, rgba(201,162,39,0.07) 0%, transparent 60%),
-        radial-gradient(ellipse at 80% 20%, rgba(201,162,39,0.04) 0%, transparent 50%),
-        var(--color-bg);
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      background: radial-gradient(ellipse at 20% 50%, rgba(201,162,39,.07) 0%, transparent 60%),
+                  radial-gradient(ellipse at 80% 20%, rgba(201,162,39,.04) 0%, transparent 50%), var(--color-bg);
       padding: 1.5rem;
     }
-
-    .login-card {
-      background: var(--color-surface);
-      border: 1px solid var(--color-border);
-      border-radius: 16px;
-      padding: 2.8rem 2.5rem;
-      width: 100%;
-      max-width: 420px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-      animation: fadeInUp 0.6s ease both;
-    }
-
-    .login-logo {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-
-    .login-logo .brand-name {
-      font-family: var(--font-display);
-      font-size: 2rem;
-      font-weight: 800;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--color-text-primary);
-    }
-
-    .login-logo .brand-accent { color: var(--color-gold); }
-
-    .login-logo .brand-icon {
-      font-size: 2.2rem;
-      color: var(--color-gold);
-      display: block;
-      margin-bottom: 0.4rem;
-    }
-
-    .login-eyebrow {
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--color-text-muted);
-      display: block;
-      margin-top: 0.3rem;
-    }
-
-    /* Campos do formulário de login */
-    .login-label {
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: var(--color-text-secondary);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-bottom: 0.4rem;
-      display: block;
-    }
-
-    .login-input {
-      background: var(--color-surface-2);
-      border: 1px solid var(--color-border);
-      border-radius: 8px;
-      color: var(--color-text-primary);
-      padding: 0.8rem 1rem;
-      width: 100%;
-      font-size: 1rem;
-      font-family: var(--font-body);
-      transition: border-color var(--transition), box-shadow var(--transition);
-    }
-
-    .login-input:focus {
-      outline: none;
-      border-color: var(--color-gold);
-      box-shadow: 0 0 0 3px rgba(201,162,39,0.15);
-      background: var(--color-surface-2);
-      color: var(--color-text-primary);
-    }
-
+    .login-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 16px; padding: 2.8rem 2.5rem; width: 100%; max-width: 420px; box-shadow: 0 20px 60px rgba(0,0,0,.5); animation: fadeInUp .6s ease both; }
+    .login-logo { text-align: center; margin-bottom: 2rem; }
+    .brand-name { font-family: var(--font-display); font-size: 2rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+    .brand-accent { color: var(--color-gold); }
+    .brand-icon { font-size: 2.2rem; color: var(--color-gold); display: block; margin-bottom: .4rem; }
+    .login-eyebrow { font-size: .72rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--color-text-muted); display: block; margin-top: .3rem; }
+    .login-label { font-size: .75rem; font-weight: 700; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: .1em; margin-bottom: .4rem; display: block; }
+    .login-input { background: var(--color-surface-2); border: 1px solid var(--color-border); border-radius: 8px; color: var(--color-text-primary); padding: .8rem 1rem; width: 100%; font-size: 1rem; font-family: var(--font-body); transition: border-color var(--t), box-shadow var(--t); }
+    .login-input:focus { outline: none; border-color: var(--color-gold); box-shadow: 0 0 0 3px rgba(201,162,39,.15); background: var(--color-surface-2); color: var(--color-text-primary); }
     .login-input::placeholder { color: var(--color-text-muted); }
-
-    /* Wrapper para input de senha com botão de mostrar/ocultar */
-    .password-wrapper {
-      position: relative;
-    }
-
-    .toggle-senha {
-      position: absolute;
-      right: 0.9rem;
-      top: 50%;
-      transform: translateY(-50%);
-      background: none;
-      border: none;
-      color: var(--color-text-muted);
-      cursor: pointer;
-      font-size: 1rem;
-      padding: 0;
-      transition: color var(--transition);
-    }
-
+    .password-wrapper { position: relative; }
+    .toggle-senha { position: absolute; right: .9rem; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--color-text-muted); cursor: pointer; font-size: 1rem; padding: 0; transition: color var(--t); }
     .toggle-senha:hover { color: var(--color-gold); }
+    .btn-login { background: var(--color-gold); border: none; color: var(--color-bg); font-family: var(--font-display); font-size: 1rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; padding: .85rem; border-radius: 8px; width: 100%; cursor: pointer; transition: all var(--t); display: flex; align-items: center; justify-content: center; gap: .5rem; }
+    .btn-login:hover { background: var(--color-gold-light); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(201,162,39,.35); }
+    #erroLogin { background: rgba(224,85,85,.1); border: 1px solid rgba(224,85,85,.3); border-radius: 8px; color: var(--color-danger); font-size: .85rem; padding: .65rem 1rem; margin-top: 1rem; display: none; text-align: center; }
+    #erroLogin.visivel { display: block; animation: shake .4s ease; }
+    .link-voltar { text-align: center; margin-top: 1.5rem; font-size: .82rem; color: var(--color-text-muted); }
+    .link-voltar a { color: var(--color-gold); font-weight: 700; }
 
-    /* Botão de entrar */
-    .btn-login {
-      background: var(--color-gold);
-      border: none;
-      color: var(--color-bg);
-      font-family: var(--font-display);
-      font-size: 1rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      padding: 0.85rem;
-      border-radius: 8px;
-      width: 100%;
-      cursor: pointer;
-      transition: all var(--transition);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-    }
-
-    .btn-login:hover {
-      background: var(--color-gold-light);
-      transform: translateY(-1px);
-      box-shadow: 0 6px 20px rgba(201,162,39,0.35);
-    }
-
-    .btn-login:active { transform: translateY(0); }
-
-    /* Mensagem de erro de login */
-    #erroLogin {
-      background: rgba(224,85,85,0.1);
-      border: 1px solid rgba(224,85,85,0.3);
-      border-radius: 8px;
-      color: var(--color-danger);
-      font-size: 0.85rem;
-      padding: 0.65rem 1rem;
-      margin-top: 1rem;
-      display: none;
-      text-align: center;
-    }
-
-    #erroLogin.visivel { display: block; animation: shake 0.4s ease; }
-
-    .link-voltar {
-      text-align: center;
-      margin-top: 1.5rem;
-      font-size: 0.82rem;
-      color: var(--color-text-muted);
-    }
-
-    .link-voltar a {
-      color: var(--color-gold);
-      font-weight: 700;
-      transition: color var(--transition);
-    }
-
-    .link-voltar a:hover { color: var(--color-gold-light); }
-
-    /* ============================================================
-       PAINEL ADMIN — oculto até login ser validado
-    ============================================================ */
+    /* ---- PAINEL ---- */
     #painelAdmin { display: none; }
-
-    /* Sidebar + Layout principal */
-    .admin-layout {
-      display: flex;
-      min-height: 100vh;
-    }
-
-    /* ---- SIDEBAR ---- */
-    .sidebar {
-      width: 240px;
-      background: var(--color-surface);
-      border-right: 1px solid var(--color-border);
-      display: flex;
-      flex-direction: column;
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 100vh;
-      z-index: 200;
-      transition: transform 0.3s ease;
-    }
-
-    .sidebar-logo {
-      padding: 1.5rem 1.4rem;
-      border-bottom: 1px solid var(--color-border);
-    }
-
-    .sidebar-brand {
-      font-family: var(--font-display);
-      font-size: 1.4rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-    }
-
+    .admin-layout { display: flex; min-height: 100vh; }
+    .sidebar { width: 240px; background: var(--color-surface); border-right: 1px solid var(--color-border); display: flex; flex-direction: column; position: fixed; top: 0; left: 0; height: 100vh; z-index: 200; transition: transform .3s ease; }
+    .sidebar-logo { padding: 1.5rem 1.4rem; border-bottom: 1px solid var(--color-border); }
+    .sidebar-brand { font-family: var(--font-display); font-size: 1.4rem; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; }
     .sidebar-brand .accent { color: var(--color-gold); }
-
-    .sidebar-badge {
-      display: inline-block;
-      background: rgba(201,162,39,0.12);
-      border: 1px solid var(--color-gold-dark);
-      color: var(--color-gold);
-      font-size: 0.62rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      padding: 0.15rem 0.55rem;
-      border-radius: 3px;
-      margin-top: 0.3rem;
-      display: block;
-      width: fit-content;
-    }
-
-    .sidebar-nav {
-      padding: 1.5rem 0.75rem;
-      flex: 1;
-    }
-
-    .nav-section-label {
-      font-size: 0.65rem;
-      font-weight: 700;
-      color: var(--color-text-muted);
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      padding: 0 0.6rem;
-      margin-bottom: 0.5rem;
-      margin-top: 1rem;
-    }
-
+    .sidebar-badge { display: inline-block; background: rgba(201,162,39,.12); border: 1px solid var(--color-gold-dark); color: var(--color-gold); font-size: .62rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; padding: .15rem .55rem; border-radius: 3px; margin-top: .3rem; }
+    .sidebar-nav { padding: 1.5rem .75rem; flex: 1; }
+    .nav-section-label { font-size: .65rem; font-weight: 700; color: var(--color-text-muted); letter-spacing: .18em; text-transform: uppercase; padding: 0 .6rem; margin-bottom: .5rem; margin-top: 1rem; }
     .nav-section-label:first-child { margin-top: 0; }
-
-    .sidebar-link {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 0.6rem 0.9rem;
-      border-radius: 8px;
-      font-size: 0.88rem;
-      font-weight: 700;
-      color: var(--color-text-secondary);
-      cursor: pointer;
-      transition: all var(--transition);
-      border: none;
-      background: none;
-      width: 100%;
-      text-align: left;
-    }
-
+    .sidebar-link { display: flex; align-items: center; gap: .75rem; padding: .6rem .9rem; border-radius: 8px; font-size: .88rem; font-weight: 700; color: var(--color-text-secondary); cursor: pointer; transition: all var(--t); border: none; background: none; width: 100%; text-align: left; }
     .sidebar-link i { font-size: 1rem; width: 20px; text-align: center; }
-
-    .sidebar-link:hover {
-      background: var(--color-surface-2);
-      color: var(--color-text-primary);
-    }
-
-    .sidebar-link.ativo {
-      background: rgba(201,162,39,0.1);
-      color: var(--color-gold);
-      border: 1px solid rgba(201,162,39,0.2);
-    }
-
-    .sidebar-link.ativo i { color: var(--color-gold); }
-
-    /* Botão de logout na base da sidebar */
-    .sidebar-footer {
-      padding: 1rem 0.75rem;
-      border-top: 1px solid var(--color-border);
-    }
-
-    .btn-logout {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      width: 100%;
-      padding: 0.6rem 0.9rem;
-      background: none;
-      border: 1px solid rgba(224,85,85,0.25);
-      border-radius: 8px;
-      color: var(--color-danger);
-      font-size: 0.85rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all var(--transition);
-    }
-
-    .btn-logout:hover { background: rgba(224,85,85,0.1); }
-
-    /* ---- CONTEÚDO PRINCIPAL ---- */
-    .admin-main {
-      margin-left: 240px;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-
-    /* Topbar do admin */
-    .admin-topbar {
-      background: var(--color-surface);
-      border-bottom: 1px solid var(--color-border);
-      padding: 1rem 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-
-    .topbar-title {
-      font-family: var(--font-display);
-      font-size: 1.3rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: var(--color-text-primary);
-    }
-
-    .topbar-user {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      font-size: 0.82rem;
-      color: var(--color-text-secondary);
-    }
-
-    .topbar-avatar {
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      background: rgba(201,162,39,0.15);
-      border: 1px solid var(--color-gold-dark);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--color-gold);
-      font-size: 0.9rem;
-    }
-
-    /* Botão hambúrguer mobile para sidebar */
-    .btn-menu-mobile {
-      display: none;
-      background: none;
-      border: none;
-      color: var(--color-text-primary);
-      font-size: 1.4rem;
-      cursor: pointer;
-    }
-
-    /* ---- CONTEÚDO DAS ABAS ---- */
-    .admin-content {
-      padding: 2rem;
-      flex: 1;
-    }
-
-    /* Painéis de aba */
-    .tab-pane-admin { display: none; animation: fadeInUp 0.3s ease both; }
+    .sidebar-link:hover { background: var(--color-surface-2); color: var(--color-text-primary); }
+    .sidebar-link.ativo { background: rgba(201,162,39,.1); color: var(--color-gold); border: 1px solid rgba(201,162,39,.2); }
+    .sidebar-footer { padding: 1rem .75rem; border-top: 1px solid var(--color-border); }
+    .btn-logout { display: flex; align-items: center; gap: .75rem; width: 100%; padding: .6rem .9rem; background: none; border: 1px solid rgba(224,85,85,.25); border-radius: 8px; color: var(--color-danger); font-size: .85rem; font-weight: 700; cursor: pointer; transition: all var(--t); }
+    .btn-logout:hover { background: rgba(224,85,85,.1); }
+    .admin-main { margin-left: 240px; flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
+    .admin-topbar { background: var(--color-surface); border-bottom: 1px solid var(--color-border); padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+    .topbar-title { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
+    .topbar-user { display: flex; align-items: center; gap: .6rem; font-size: .82rem; color: var(--color-text-secondary); }
+    .topbar-avatar { width: 34px; height: 34px; border-radius: 50%; background: rgba(201,162,39,.15); border: 1px solid var(--color-gold-dark); display: flex; align-items: center; justify-content: center; color: var(--color-gold); font-size: .9rem; }
+    .btn-menu-mobile { display: none; background: none; border: none; color: var(--color-text-primary); font-size: 1.4rem; cursor: pointer; }
+    .admin-content { padding: 2rem; flex: 1; }
+    .tab-pane-admin { display: none; animation: fadeInUp .3s ease both; }
     .tab-pane-admin.ativo { display: block; }
 
-    /* ---- CARDS DE ESTATÍSTICAS (Dashboard) ---- */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1.25rem;
-      margin-bottom: 2rem;
-    }
-
-    .stat-card {
-      background: var(--color-surface);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius);
-      padding: 1.5rem;
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      transition: border-color var(--transition);
-    }
-
+    /* ---- STATS ---- */
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.25rem; margin-bottom: 2rem; }
+    .stat-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius); padding: 1.4rem; display: flex; align-items: center; gap: 1rem; transition: border-color var(--t); }
     .stat-card:hover { border-color: var(--color-gold-dark); }
+    .stat-icon { width: 46px; height: 46px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .stat-icon.gold  { background: rgba(201,162,39,.12); color: var(--color-gold); }
+    .stat-icon.green { background: rgba(61,186,124,.12);  color: var(--color-success); }
+    .stat-icon.orange{ background: rgba(224,122,42,.12);  color: var(--color-warning); }
+    .stat-icon.blue  { background: rgba(126,179,245,.12); color: var(--color-blue); }
+    .stat-info span  { display: block; font-size: .7rem; font-weight: 700; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: .1em; margin-bottom: .2rem; }
+    .stat-info strong{ font-family: var(--font-display); font-size: 1.7rem; font-weight: 800; color: var(--color-text-primary); line-height: 1; }
 
-    .stat-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.3rem;
-      flex-shrink: 0;
-    }
-
-    .stat-icon.gold { background: rgba(201,162,39,0.12); color: var(--color-gold); }
-    .stat-icon.green { background: rgba(61,186,124,0.12); color: var(--color-success); }
-    .stat-icon.blue { background: rgba(100,140,220,0.12); color: #7eb3f5; }
-
-    .stat-info span {
-      display: block;
-      font-size: 0.72rem;
-      font-weight: 700;
-      color: var(--color-text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-bottom: 0.25rem;
-    }
-
-    .stat-info strong {
-      font-family: var(--font-display);
-      font-size: 1.8rem;
-      font-weight: 800;
-      color: var(--color-text-primary);
-      line-height: 1;
-    }
-
-    /* ---- SEÇÃO: ADICIONAR / EDITAR VEÍCULO ---- */
-    .form-section {
-      background: var(--color-surface);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius);
-      padding: 1.75rem;
-      margin-bottom: 2rem;
-    }
-
-    .form-section-title {
-      font-family: var(--font-display);
-      font-size: 1.15rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--color-text-primary);
-      margin-bottom: 1.5rem;
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-    }
-
+    /* ---- FORM ---- */
+    .form-section { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius); padding: 1.75rem; margin-bottom: 2rem; }
+    .form-section-title { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 1.5rem; display: flex; align-items: center; gap: .6rem; }
     .form-section-title i { color: var(--color-gold); }
-
-    .form-section-title .form-mode-badge {
-      font-size: 0.65rem;
-      background: rgba(201,162,39,0.12);
-      border: 1px solid var(--color-gold-dark);
-      color: var(--color-gold);
-      padding: 0.15rem 0.55rem;
-      border-radius: 4px;
-      letter-spacing: 0.08em;
-    }
-
-    /* Labels personalizados */
-    .f-label {
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: var(--color-text-secondary);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-bottom: 0.4rem;
-      display: block;
-    }
-
-    /* Inputs customizados */
-    .f-input,
-    .f-textarea,
-    .f-select {
-      background: var(--color-surface-2);
-      border: 1px solid var(--color-border);
-      border-radius: 8px;
-      color: var(--color-text-primary);
-      padding: 0.75rem 1rem;
-      width: 100%;
-      font-size: 0.92rem;
-      font-family: var(--font-body);
-      transition: border-color var(--transition), box-shadow var(--transition);
-    }
-
-    .f-input:focus,
-    .f-textarea:focus,
-    .f-select:focus {
-      outline: none;
-      border-color: var(--color-gold);
-      box-shadow: 0 0 0 3px rgba(201,162,39,0.12);
-      background: var(--color-surface-2);
-      color: var(--color-text-primary);
-    }
-
-    .f-input::placeholder,
-    .f-textarea::placeholder { color: var(--color-text-muted); }
-
-    .f-select option { background: var(--color-surface-2); }
-
+    .form-mode-badge { font-size: .65rem; background: rgba(201,162,39,.12); border: 1px solid var(--color-gold-dark); color: var(--color-gold); padding: .15rem .55rem; border-radius: 4px; letter-spacing: .08em; }
+    .f-label { font-size: .75rem; font-weight: 700; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: .1em; margin-bottom: .4rem; display: block; }
+    .f-input, .f-textarea { background: var(--color-surface-2); border: 1px solid var(--color-border); border-radius: 8px; color: var(--color-text-primary); padding: .75rem 1rem; width: 100%; font-size: .92rem; font-family: var(--font-body); transition: border-color var(--t), box-shadow var(--t); }
+    .f-input:focus, .f-textarea:focus { outline: none; border-color: var(--color-gold); box-shadow: 0 0 0 3px rgba(201,162,39,.12); background: var(--color-surface-2); color: var(--color-text-primary); }
+    .f-input::placeholder, .f-textarea::placeholder { color: var(--color-text-muted); }
     .f-textarea { resize: vertical; min-height: 90px; }
 
-    /* Preview de imagem ao lado do campo URL */
-    .img-preview-wrapper {
-      margin-top: 0.6rem;
-      border: 1px dashed var(--color-border);
-      border-radius: 8px;
-      overflow: hidden;
-      height: 130px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--color-surface-2);
-      transition: border-color var(--transition);
-    }
-
+    /* Preview foto principal */
+    .img-preview-wrapper { margin-top: .6rem; border: 1px dashed var(--color-border); border-radius: 8px; overflow: hidden; height: 130px; display: flex; align-items: center; justify-content: center; background: var(--color-surface-2); transition: border-color var(--t); }
     .img-preview-wrapper.tem-imagem { border-style: solid; border-color: var(--color-gold-dark); }
-
-    #previewImagem {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: none;
-    }
-
+    #previewImagem { width: 100%; height: 100%; object-fit: cover; display: none; }
     #previewImagem.visivel { display: block; }
-
-    .preview-placeholder {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.4rem;
-      color: var(--color-text-muted);
-      font-size: 0.8rem;
-    }
-
+    .preview-placeholder { display: flex; flex-direction: column; align-items: center; gap: .4rem; color: var(--color-text-muted); font-size: .8rem; }
     .preview-placeholder i { font-size: 1.6rem; }
 
-    /* Botões do formulário */
-    .btn-salvar {
-      background: var(--color-gold);
-      border: none;
-      color: var(--color-bg);
-      font-family: var(--font-display);
-      font-size: 0.95rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 0.75rem 2rem;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all var(--transition);
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
+    /* ---- FOTOS EXTRAS ---- */
+    .fotos-extras-section { background: var(--color-surface-2); border: 1px solid var(--color-border); border-radius: 8px; padding: 1.25rem; margin-top: .5rem; }
+    .fotos-extras-title { font-size: .78rem; font-weight: 700; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between; gap: .5rem; flex-wrap: wrap; }
+    .btn-add-foto { background: rgba(201,162,39,.1); border: 1px solid var(--color-gold-dark); color: var(--color-gold); font-size: .78rem; font-weight: 700; padding: .35rem .9rem; border-radius: 6px; cursor: pointer; transition: all var(--t); display: inline-flex; align-items: center; gap: .4rem; }
+    .btn-add-foto:hover { background: rgba(201,162,39,.2); }
+    #containerFotosExtras { display: flex; flex-direction: column; gap: .75rem; }
+    .foto-extra-row { display: flex; align-items: center; gap: .75rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; padding: .75rem; }
+    .foto-extra-preview { width: 60px; height: 44px; border-radius: 6px; overflow: hidden; background: var(--color-surface-2); border: 1px solid var(--color-border); flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+    .foto-extra-preview img { width: 100%; height: 100%; object-fit: cover; }
+    .foto-preview-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--color-text-muted); font-size: 1rem; }
+    .btn-remover-foto { background: rgba(224,85,85,.1); border: 1px solid rgba(224,85,85,.25); color: var(--color-danger); border-radius: 6px; padding: .4rem .6rem; cursor: pointer; font-size: .85rem; transition: all var(--t); flex-shrink: 0; }
+    .btn-remover-foto:hover { background: rgba(224,85,85,.2); }
 
-    .btn-salvar:hover {
-      background: var(--color-gold-light);
-      transform: translateY(-1px);
-      box-shadow: 0 4px 16px rgba(201,162,39,0.3);
-    }
+    /* ---- BOTÕES FORM ---- */
+    .btn-salvar { background: var(--color-gold); border: none; color: var(--color-bg); font-family: var(--font-display); font-size: .95rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: .75rem 2rem; border-radius: 8px; cursor: pointer; transition: all var(--t); display: inline-flex; align-items: center; gap: .5rem; }
+    .btn-salvar:hover { background: var(--color-gold-light); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(201,162,39,.3); }
+    .btn-cancelar-edicao { background: transparent; border: 1px solid var(--color-border); color: var(--color-text-secondary); font-family: var(--font-display); font-size: .9rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: .75rem 1.5rem; border-radius: 8px; cursor: pointer; transition: all var(--t); display: none; align-items: center; gap: .5rem; }
+    .btn-cancelar-edicao.visivel { display: inline-flex; }
+    .btn-cancelar-edicao:hover { border-color: var(--color-danger); color: var(--color-danger); }
 
-    .btn-cancelar-edicao {
-      background: transparent;
-      border: 1px solid var(--color-border);
-      color: var(--color-text-secondary);
-      font-family: var(--font-display);
-      font-size: 0.9rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 0.75rem 1.5rem;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all var(--transition);
-      display: none;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .btn-cancelar-edicao.visivel {
-      display: inline-flex;
-    }
-
-    .btn-cancelar-edicao:hover {
-      border-color: var(--color-danger);
-      color: var(--color-danger);
-    }
-
-    /* ---- TABELA DE VEÍCULOS CADASTRADOS ---- */
-    .table-section {
-      background: var(--color-surface);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius);
-      overflow: hidden;
-    }
-
-    .table-header {
-      padding: 1.2rem 1.75rem;
-      border-bottom: 1px solid var(--color-border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-    }
-
-    .table-header-title {
-      font-family: var(--font-display);
-      font-size: 1.1rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-
-    /* Campo de busca da tabela */
-    .table-search {
-      background: var(--color-surface-2);
-      border: 1px solid var(--color-border);
-      border-radius: 8px;
-      color: var(--color-text-primary);
-      padding: 0.55rem 1rem 0.55rem 2.4rem;
-      font-size: 0.88rem;
-      font-family: var(--font-body);
-      width: 220px;
-      transition: border-color var(--transition);
-    }
-
-    .table-search:focus {
-      outline: none;
-      border-color: var(--color-gold);
-      background: var(--color-surface-2);
-      color: var(--color-text-primary);
-    }
-
+    /* ---- TABELA ---- */
+    .table-section { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius); overflow: hidden; }
+    .table-header { padding: 1.2rem 1.75rem; border-bottom: 1px solid var(--color-border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .75rem; }
+    .table-header-title { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
+    .table-search-wrapper { position: relative; }
+    .table-search-wrapper i { position: absolute; left: .75rem; top: 50%; transform: translateY(-50%); color: var(--color-text-muted); font-size: .85rem; pointer-events: none; }
+    .table-search { background: var(--color-surface-2); border: 1px solid var(--color-border); border-radius: 8px; color: var(--color-text-primary); padding: .55rem 1rem .55rem 2.4rem; font-size: .88rem; font-family: var(--font-body); width: 220px; transition: border-color var(--t); }
+    .table-search:focus { outline: none; border-color: var(--color-gold); background: var(--color-surface-2); color: var(--color-text-primary); }
     .table-search::placeholder { color: var(--color-text-muted); }
-
-    .table-search-wrapper {
-      position: relative;
-    }
-
-    .table-search-wrapper i {
-      position: absolute;
-      left: 0.75rem;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--color-text-muted);
-      font-size: 0.85rem;
-      pointer-events: none;
-    }
-
-    /* Tabela */
-    .veiculos-table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    .veiculos-table thead th {
-      padding: 0.75rem 1rem;
-      font-size: 0.68rem;
-      font-weight: 700;
-      color: var(--color-text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      border-bottom: 1px solid var(--color-border);
-      background: var(--color-surface-2);
-      text-align: left;
-      white-space: nowrap;
-    }
-
-    .veiculos-table tbody tr {
-      border-bottom: 1px solid var(--color-border);
-      transition: background var(--transition);
-    }
-
+    .veiculos-table { width: 100%; border-collapse: collapse; }
+    .veiculos-table thead th { padding: .75rem 1rem; font-size: .68rem; font-weight: 700; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: .12em; border-bottom: 1px solid var(--color-border); background: var(--color-surface-2); text-align: left; white-space: nowrap; }
+    .veiculos-table tbody tr { border-bottom: 1px solid var(--color-border); transition: background var(--t); }
     .veiculos-table tbody tr:last-child { border-bottom: none; }
-
     .veiculos-table tbody tr:hover { background: var(--color-surface-2); }
+    .veiculos-table tbody td { padding: .85rem 1rem; font-size: .88rem; color: var(--color-text-secondary); vertical-align: middle; }
+    .table-thumb { width: 56px; height: 40px; object-fit: cover; border-radius: 6px; border: 1px solid var(--color-border); }
+    .table-modelo { font-family: var(--font-display); font-weight: 700; font-size: .95rem; color: var(--color-text-primary); letter-spacing: .02em; }
+    .table-marca-badge { font-size: .68rem; font-weight: 700; color: var(--color-gold); text-transform: uppercase; letter-spacing: .1em; }
+    .btn-acao { border: none; border-radius: 6px; padding: .35rem .65rem; font-size: .75rem; font-weight: 700; cursor: pointer; transition: all var(--t); display: inline-flex; align-items: center; gap: .3rem; white-space: nowrap; }
+    .btn-editar  { background: rgba(126,179,245,.1); color: var(--color-blue);    border: 1px solid rgba(126,179,245,.2); }
+    .btn-editar:hover { background: rgba(126,179,245,.2); }
+    .btn-ocultar { background: rgba(224,122,42,.1); color: var(--color-warning); border: 1px solid rgba(224,122,42,.2); }
+    .btn-ocultar:hover { background: rgba(224,122,42,.2); }
+    .btn-excluir { background: rgba(224,85,85,.1);  color: var(--color-danger);  border: 1px solid rgba(224,85,85,.2); }
+    .btn-excluir:hover { background: rgba(224,85,85,.2); }
+    .table-empty { text-align: center; padding: 3rem 1rem; color: var(--color-text-muted); }
+    .table-empty i { font-size: 2.5rem; display: block; margin-bottom: .75rem; }
 
-    .veiculos-table tbody td {
-      padding: 0.85rem 1rem;
-      font-size: 0.88rem;
-      color: var(--color-text-secondary);
-      vertical-align: middle;
-    }
-
-    /* Miniatura de imagem na tabela */
-    .table-thumb {
-      width: 56px;
-      height: 40px;
-      object-fit: cover;
-      border-radius: 6px;
-      border: 1px solid var(--color-border);
-    }
-
-    /* Nome do modelo em destaque */
-    .table-modelo {
-      font-family: var(--font-display);
-      font-weight: 700;
-      font-size: 0.95rem;
-      color: var(--color-text-primary);
-      letter-spacing: 0.02em;
-    }
-
-    .table-marca-badge {
-      font-size: 0.68rem;
-      font-weight: 700;
-      color: var(--color-gold);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-    }
-
-    /* Botões de ação na linha da tabela */
-    .btn-acao {
-      border: none;
-      border-radius: 6px;
-      padding: 0.35rem 0.7rem;
-      font-size: 0.78rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all var(--transition);
-      display: inline-flex;
-      align-items: center;
-      gap: 0.3rem;
-    }
-
-    .btn-editar {
-      background: rgba(126,179,245,0.1);
-      color: #7eb3f5;
-      border: 1px solid rgba(126,179,245,0.2);
-    }
-
-    .btn-editar:hover { background: rgba(126,179,245,0.2); }
-
-    .btn-excluir {
-      background: rgba(224,85,85,0.1);
-      color: var(--color-danger);
-      border: 1px solid rgba(224,85,85,0.2);
-    }
-
-    .btn-excluir:hover { background: rgba(224,85,85,0.2); }
-
-    /* Mensagem quando tabela está vazia */
-    .table-empty {
-      text-align: center;
-      padding: 3rem 1rem;
-      color: var(--color-text-muted);
-    }
-
-    .table-empty i { font-size: 2.5rem; display: block; margin-bottom: 0.75rem; }
-
-    /* ---- TOAST DE FEEDBACK ---- */
-    .toast-container-custom {
-      position: fixed;
-      bottom: 1.5rem;
-      right: 1.5rem;
-      z-index: 9999;
-      display: flex;
-      flex-direction: column;
-      gap: 0.6rem;
-    }
-
-    .toast-custom {
-      background: var(--color-surface);
-      border: 1px solid var(--color-border);
-      border-radius: 10px;
-      padding: 0.9rem 1.2rem;
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      min-width: 260px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-      animation: slideInRight 0.3s ease both;
-      font-size: 0.88rem;
-      color: var(--color-text-primary);
-    }
-
+    /* ---- TOAST ---- */
+    .toast-container-custom { position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9999; display: flex; flex-direction: column; gap: .6rem; }
+    .toast-custom { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; padding: .9rem 1.2rem; display: flex; align-items: center; gap: .75rem; min-width: 260px; box-shadow: 0 8px 24px rgba(0,0,0,.4); animation: slideInRight .3s ease both; font-size: .88rem; color: var(--color-text-primary); }
     .toast-custom.sucesso { border-left: 3px solid var(--color-success); }
     .toast-custom.erro    { border-left: 3px solid var(--color-danger); }
     .toast-custom.aviso   { border-left: 3px solid var(--color-gold); }
-
     .toast-icon { font-size: 1.1rem; flex-shrink: 0; }
     .toast-custom.sucesso .toast-icon { color: var(--color-success); }
     .toast-custom.erro    .toast-icon { color: var(--color-danger); }
     .toast-custom.aviso   .toast-icon { color: var(--color-gold); }
 
-    /* ---- MODAL DE CONFIRMAÇÃO DE EXCLUSÃO ---- */
-    .confirm-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.7);
-      backdrop-filter: blur(4px);
-      z-index: 9000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 1rem;
-      display: none;
-    }
-
+    /* ---- CONFIRM MODAL ---- */
+    .confirm-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.7); backdrop-filter: blur(4px); z-index: 9000; display: none; align-items: center; justify-content: center; padding: 1rem; }
     .confirm-overlay.visivel { display: flex; }
-
-    .confirm-card {
-      background: var(--color-surface);
-      border: 1px solid var(--color-border);
-      border-radius: 14px;
-      padding: 2rem;
-      max-width: 400px;
-      width: 100%;
-      text-align: center;
-      animation: fadeInUp 0.3s ease both;
-    }
-
-    .confirm-icon {
-      font-size: 2.5rem;
-      color: var(--color-danger);
-      margin-bottom: 1rem;
-    }
-
-    .confirm-title {
-      font-family: var(--font-display);
-      font-size: 1.3rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      margin-bottom: 0.5rem;
-    }
-
-    .confirm-msg {
-      font-size: 0.88rem;
-      color: var(--color-text-secondary);
-      margin-bottom: 1.5rem;
-    }
-
-    .confirm-actions {
-      display: flex;
-      gap: 0.75rem;
-      justify-content: center;
-    }
-
-    .btn-confirm-excluir {
-      background: var(--color-danger);
-      border: none;
-      color: #fff;
-      font-family: var(--font-display);
-      font-size: 0.9rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      padding: 0.65rem 1.5rem;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all var(--transition);
-    }
-
+    .confirm-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 14px; padding: 2rem; max-width: 400px; width: 100%; text-align: center; animation: fadeInUp .3s ease both; }
+    .confirm-icon { font-size: 2.5rem; color: var(--color-danger); margin-bottom: 1rem; }
+    .confirm-title { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; margin-bottom: .5rem; }
+    .confirm-msg { font-size: .88rem; color: var(--color-text-secondary); margin-bottom: 1.5rem; }
+    .confirm-actions { display: flex; gap: .75rem; justify-content: center; }
+    .btn-confirm-excluir { background: var(--color-danger); border: none; color: #fff; font-family: var(--font-display); font-size: .9rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; padding: .65rem 1.5rem; border-radius: 8px; cursor: pointer; transition: all var(--t); }
     .btn-confirm-excluir:hover { background: #c84444; }
-
-    .btn-confirm-cancelar {
-      background: var(--color-surface-2);
-      border: 1px solid var(--color-border);
-      color: var(--color-text-secondary);
-      font-family: var(--font-display);
-      font-size: 0.9rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      padding: 0.65rem 1.5rem;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all var(--transition);
-    }
-
+    .btn-confirm-cancelar { background: var(--color-surface-2); border: 1px solid var(--color-border); color: var(--color-text-secondary); font-family: var(--font-display); font-size: .9rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; padding: .65rem 1.5rem; border-radius: 8px; cursor: pointer; transition: all var(--t); }
     .btn-confirm-cancelar:hover { border-color: var(--color-gold); color: var(--color-gold); }
 
-    /* ---- ANIMAÇÕES ---- */
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
+    /* ---- ANIMATIONS ---- */
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes shake { 0%,100%{transform:translateX(0)} 20%,60%{transform:translateX(-6px)} 40%,80%{transform:translateX(6px)} }
+    @keyframes slideInRight { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
 
-    @keyframes shake {
-      0%, 100% { transform: translateX(0); }
-      20%, 60%  { transform: translateX(-6px); }
-      40%, 80%  { transform: translateX(6px); }
-    }
-
-    @keyframes slideInRight {
-      from { opacity: 0; transform: translateX(20px); }
-      to   { opacity: 1; transform: translateX(0); }
-    }
-
-    /* ---- RESPONSIVIDADE MOBILE ---- */
+    /* ---- RESPONSIVE ---- */
     @media (max-width: 768px) {
-      .sidebar {
-        transform: translateX(-100%);
-      }
-
-      .sidebar.aberta {
-        transform: translateX(0);
-      }
-
-      .admin-main {
-        margin-left: 0;
-      }
-
-      .btn-menu-mobile {
-        display: block;
-      }
-
-      .admin-content {
-        padding: 1.25rem;
-      }
-
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.aberta { transform: translateX(0); }
+      .admin-main { margin-left: 0; }
+      .btn-menu-mobile { display: block; }
+      .admin-content { padding: 1.25rem; }
       .table-search { width: 100%; }
-
       .veiculos-table thead th:nth-child(1),
-      .veiculos-table tbody td:nth-child(1) { display: none; } /* oculta thumb no mobile */
+      .veiculos-table tbody td:nth-child(1) { display: none; }
     }
-
-    /* Scrollbar */
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: var(--color-bg); }
     ::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 3px; }
@@ -993,130 +219,66 @@
 </head>
 <body>
 
-<!-- ============================================================
-  TELA DE LOGIN
-  Exibida ao carregar a página. Ocultada após autenticação.
-============================================================ -->
+<!-- ====================== TELA LOGIN ====================== -->
 <div id="telaLogin">
   <div class="login-card">
-
-    <!-- Logo -->
     <div class="login-logo">
       <i class="bi bi-car-front-fill brand-icon"></i>
       <span class="brand-name">ADG<span class="brand-accent">Veiculos</span></span>
       <span class="login-eyebrow">Painel Administrativo</span>
     </div>
-
-    <!-- Campo CPF -->
-    <div style="margin-bottom: 1.1rem;">
-      <label class="login-label" for="inputCPF">
-        <i class="bi bi-person-badge me-1"></i> CPF do Administrador
-      </label>
-      <!--
-        O input recebe a máscara de CPF via JavaScript (formatarCPF).
-        maxlength="14" limita ao tamanho do CPF formatado: 000.000.000-00
-      -->
-      <input
-        type="text"
-        id="inputCPF"
-        class="login-input"
-        placeholder="000.000.000-00"
-        maxlength="14"
-        autocomplete="off"
-        inputmode="numeric"
-      />
+    <div style="margin-bottom:1.1rem">
+      <label class="login-label" for="inputCPF"><i class="bi bi-person-badge me-1"></i>CPF do Administrador</label>
+      <input type="text" id="inputCPF" class="login-input" placeholder="000.000.000-00" maxlength="14" autocomplete="off" inputmode="numeric" />
     </div>
-
-    <!-- Campo Senha -->
-    <div style="margin-bottom: 1.5rem;">
-      <label class="login-label" for="inputSenha">
-        <i class="bi bi-lock-fill me-1"></i> Senha
-      </label>
+    <div style="margin-bottom:1.5rem">
+      <label class="login-label" for="inputSenha"><i class="bi bi-lock-fill me-1"></i>Senha</label>
       <div class="password-wrapper">
-        <input
-          type="password"
-          id="inputSenha"
-          class="login-input"
-          placeholder="Digite sua senha"
-          autocomplete="current-password"
-        />
-        <!-- Botão para mostrar/ocultar senha -->
-        <button class="toggle-senha" type="button" id="toggleSenha" title="Mostrar/Ocultar senha">
+        <input type="password" id="inputSenha" class="login-input" placeholder="Digite sua senha" autocomplete="current-password" />
+        <button class="toggle-senha" type="button" id="toggleSenha">
           <i class="bi bi-eye" id="iconeSenha"></i>
         </button>
       </div>
     </div>
-
-    <!-- Botão Entrar -->
     <button class="btn-login" id="btnEntrar" type="button">
       <i class="bi bi-box-arrow-in-right"></i> Entrar no Painel
     </button>
-
-    <!-- Mensagem de erro -->
     <div id="erroLogin">
-      <i class="bi bi-exclamation-triangle-fill me-2"></i>
-      <span id="textoErro">CPF ou senha incorretos.</span>
+      <i class="bi bi-exclamation-triangle-fill me-2"></i>CPF ou senha incorretos.
     </div>
-
-    <!-- Link para o site -->
-    <p class="link-voltar">
-      <a href="index.html">
-        <i class="bi bi-arrow-left me-1"></i> Voltar para o site
-      </a>
-    </p>
+    <p class="link-voltar"><a href="index.html"><i class="bi bi-arrow-left me-1"></i>Voltar para o site</a></p>
   </div>
 </div>
-<!-- FIM: TELA DE LOGIN -->
+<!-- ====================== FIM LOGIN ====================== -->
 
 
-<!-- ============================================================
-  PAINEL ADMINISTRATIVO
-  Exibido após login bem-sucedido. Oculto inicialmente.
-============================================================ -->
+<!-- ====================== PAINEL ADMIN ====================== -->
 <div id="painelAdmin">
   <div class="admin-layout">
 
-    <!-- ---- SIDEBAR ---- -->
-    <aside class="sidebar" id="sidebar" role="navigation" aria-label="Menu administrativo">
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
       <div class="sidebar-logo">
-        <div class="sidebar-brand">Auto<span class="accent">Prime</span></div>
+        <div class="sidebar-brand">ADG<span class="accent">VEICULOS</span></div>
         <span class="sidebar-badge"><i class="bi bi-shield-check me-1"></i>Admin</span>
       </div>
-
       <nav class="sidebar-nav">
         <p class="nav-section-label">Principal</p>
-        <button class="sidebar-link ativo" data-tab="dashboard">
-          <i class="bi bi-grid-fill"></i> Dashboard
-        </button>
-        <button class="sidebar-link" data-tab="veiculos">
-          <i class="bi bi-car-front-fill"></i> Veículos
-        </button>
-
+        <button class="sidebar-link ativo" data-tab="dashboard"><i class="bi bi-grid-fill"></i>Dashboard</button>
+        <button class="sidebar-link" data-tab="veiculos"><i class="bi bi-car-front-fill"></i>Veículos</button>
         <p class="nav-section-label">Acesso Rápido</p>
-        <a href="index.html" class="sidebar-link" target="_blank">
-          <i class="bi bi-eye-fill"></i> Ver Site
-        </a>
+        <a href="index.html" class="sidebar-link" target="_blank"><i class="bi bi-eye-fill"></i>Ver Site</a>
       </nav>
-
       <div class="sidebar-footer">
-        <button class="btn-logout" id="btnLogout">
-          <i class="bi bi-box-arrow-left"></i> Sair
-        </button>
+        <button class="btn-logout" id="btnLogout"><i class="bi bi-box-arrow-left"></i>Sair</button>
       </div>
     </aside>
-    <!-- FIM: SIDEBAR -->
 
-
-    <!-- ---- CONTEÚDO PRINCIPAL ---- -->
+    <!-- CONTEÚDO -->
     <div class="admin-main">
-
-      <!-- Topbar -->
       <header class="admin-topbar">
-        <div style="display:flex; align-items:center; gap:0.75rem;">
-          <!-- Botão hambúrguer (aparece no mobile) -->
-          <button class="btn-menu-mobile" id="btnMenuMobile" aria-label="Abrir menu">
-            <i class="bi bi-list"></i>
-          </button>
+        <div style="display:flex;align-items:center;gap:.75rem">
+          <button class="btn-menu-mobile" id="btnMenuMobile"><i class="bi bi-list"></i></button>
           <span class="topbar-title" id="topbarTitulo">Dashboard</span>
         </div>
         <div class="topbar-user">
@@ -1125,146 +287,111 @@
         </div>
       </header>
 
-      <!-- Área de conteúdo das abas -->
       <div class="admin-content">
 
-        <!-- ================================================
-          ABA: DASHBOARD
-          Exibe estatísticas gerais do estoque.
-        ================================================ -->
+        <!-- ========== ABA: DASHBOARD ========== -->
         <div class="tab-pane-admin ativo" id="tab-dashboard">
-
           <div class="stats-grid">
             <div class="stat-card">
               <div class="stat-icon gold"><i class="bi bi-car-front-fill"></i></div>
-              <div class="stat-info">
-                <span>Total de Veículos</span>
-                <strong id="statTotal">—</strong>
-              </div>
+              <div class="stat-info"><span>Total</span><strong id="statTotal">—</strong></div>
             </div>
             <div class="stat-card">
-              <div class="stat-icon green"><i class="bi bi-currency-dollar"></i></div>
-              <div class="stat-info">
-                <span>Preço Médio</span>
-                <strong id="statMedia" style="font-size:1.2rem">—</strong>
-              </div>
+              <div class="stat-icon green"><i class="bi bi-eye-fill"></i></div>
+              <div class="stat-info"><span>Visíveis</span><strong id="statVisiveis">—</strong></div>
             </div>
             <div class="stat-card">
-              <div class="stat-icon blue"><i class="bi bi-speedometer2"></i></div>
-              <div class="stat-info">
-                <span>Km Médio</span>
-                <strong id="statKmMedio" style="font-size:1.2rem">—</strong>
-              </div>
+              <div class="stat-icon orange"><i class="bi bi-eye-slash-fill"></i></div>
+              <div class="stat-info"><span>Ocultos</span><strong id="statOcultos">—</strong></div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon blue"><i class="bi bi-currency-dollar"></i></div>
+              <div class="stat-info"><span>Preço Médio</span><strong id="statMedia" style="font-size:1.1rem">—</strong></div>
             </div>
           </div>
-
-          <!-- Lista resumida dos 5 últimos veículos -->
           <div class="table-section">
             <div class="table-header">
               <span class="table-header-title"><i class="bi bi-clock-history me-2" style="color:var(--color-gold)"></i>Últimos Cadastros</span>
             </div>
-            <div id="resumoUltimos" style="padding: 0 1rem 1rem;">
-              <!-- Preenchido pelo JS -->
-            </div>
+            <div id="resumoUltimos" style="padding:0 1rem 1rem"></div>
           </div>
         </div>
-        <!-- FIM: ABA DASHBOARD -->
+        <!-- FIM DASHBOARD -->
 
 
-        <!-- ================================================
-          ABA: VEÍCULOS (Formulário + Tabela)
-        ================================================ -->
+        <!-- ========== ABA: VEÍCULOS ========== -->
         <div class="tab-pane-admin" id="tab-veiculos">
 
-          <!-- FORMULÁRIO DE CADASTRO / EDIÇÃO -->
+          <!-- FORMULÁRIO -->
           <div class="form-section">
             <h2 class="form-section-title">
               <i class="bi bi-plus-circle-fill"></i>
               <span id="formTitulo">Adicionar Novo Veículo</span>
               <span class="form-mode-badge" id="formModoBadge">NOVO</span>
             </h2>
-
-            <!--
-              O formulário usa o sistema de grid do Bootstrap.
-              Cada campo tem um ID correspondente ao campo no objeto
-              veículo, facilitando a leitura e salvamento pelo JS.
-            -->
             <div class="row g-3">
-              <!-- Campo oculto que guarda o ID ao editar -->
-              <input type="hidden" id="campoId" value="" />
+              <input type="hidden" id="campoId" />
 
-              <!-- Marca -->
               <div class="col-12 col-sm-6 col-lg-3">
                 <label class="f-label" for="campoMarca">Marca *</label>
                 <input type="text" id="campoMarca" class="f-input" placeholder="Ex: Volkswagen" maxlength="40" />
               </div>
-
-              <!-- Modelo -->
               <div class="col-12 col-sm-6 col-lg-5">
                 <label class="f-label" for="campoModelo">Modelo *</label>
                 <input type="text" id="campoModelo" class="f-input" placeholder="Ex: Passat 2.0 TSI Highline" maxlength="80" />
               </div>
-
-              <!-- Ano -->
               <div class="col-6 col-sm-4 col-lg-2">
                 <label class="f-label" for="campoAno">Ano *</label>
                 <input type="number" id="campoAno" class="f-input" placeholder="2023" min="1990" max="2030" />
               </div>
-
-              <!-- Quilometragem -->
               <div class="col-6 col-sm-4 col-lg-2">
                 <label class="f-label" for="campoKm">Quilometragem *</label>
                 <input type="number" id="campoKm" class="f-input" placeholder="15000" min="0" />
               </div>
-
-              <!-- Preço -->
               <div class="col-12 col-sm-4 col-lg-3">
                 <label class="f-label" for="campoPreco">Preço (R$) *</label>
                 <input type="number" id="campoPreco" class="f-input" placeholder="98500" min="0" step="100" />
               </div>
 
-              <!-- URL da Imagem + Preview -->
+              <!-- Foto principal + preview -->
               <div class="col-12 col-lg-9">
-                <label class="f-label" for="campoImagem">URL da Foto *</label>
-                <input
-                  type="url"
-                  id="campoImagem"
-                  class="f-input"
-                  placeholder="https://images.unsplash.com/photo-..."
-                />
-                <small style="color: var(--color-text-muted); font-size:0.72rem; margin-top:0.3rem; display:block;">
-                  Cole a URL de qualquer imagem pública. Sugestão: <a href="https://unsplash.com" target="_blank" style="color:var(--color-gold)">unsplash.com</a>
+                <label class="f-label" for="campoImagem">Foto Principal (URL) *</label>
+                <input type="url" id="campoImagem" class="f-input" placeholder="https://images.unsplash.com/photo-..." />
+                <small style="color:var(--color-text-muted);font-size:.72rem;margin-top:.3rem;display:block">
+                  Cole qualquer URL de imagem pública. Sugestão: <a href="https://unsplash.com" target="_blank" style="color:var(--color-gold)">unsplash.com</a>
                 </small>
               </div>
-
-              <!-- Preview da imagem -->
-              <div class="col-12 col-lg-3 d-flex flex-column" style="gap:0.4rem;">
+              <div class="col-12 col-lg-3 d-flex flex-column" style="gap:.4rem">
                 <label class="f-label">Pré-visualização</label>
                 <div class="img-preview-wrapper" id="previewWrapper">
-                  <div class="preview-placeholder" id="previewPlaceholder">
-                    <i class="bi bi-image"></i>
-                    <span>Prévia da foto</span>
-                  </div>
+                  <div class="preview-placeholder" id="previewPlaceholder"><i class="bi bi-image"></i><span>Prévia</span></div>
                   <img id="previewImagem" src="" alt="Preview" />
+                </div>
+              </div>
+
+              <!-- Fotos extras -->
+              <div class="col-12">
+                <div class="fotos-extras-section">
+                  <div class="fotos-extras-title">
+                    <span><i class="bi bi-images me-1" style="color:var(--color-gold)"></i>Fotos Adicionais</span>
+                    <button type="button" class="btn-add-foto" id="btnAdicionarFoto">
+                      <i class="bi bi-plus-lg"></i> Adicionar Foto
+                    </button>
+                  </div>
+                  <!-- Campos gerados dinamicamente pelo JS -->
+                  <div id="containerFotosExtras"></div>
                 </div>
               </div>
 
               <!-- Descrição -->
               <div class="col-12">
                 <label class="f-label" for="campoDescricao">Descrição *</label>
-                <textarea
-                  id="campoDescricao"
-                  class="f-textarea"
-                  placeholder="Descreva os principais itens de série, estado do veículo, histórico de revisões..."
-                  maxlength="400"
-                ></textarea>
-                <small style="color: var(--color-text-muted); font-size:0.72rem;">
-                  <span id="contadorDescricao">0</span>/400 caracteres
-                </small>
+                <textarea id="campoDescricao" class="f-textarea" placeholder="Descreva os itens de série, estado do veículo..." maxlength="400"></textarea>
+                <small style="color:var(--color-text-muted);font-size:.72rem"><span id="contadorDescricao">0</span>/400 caracteres</small>
               </div>
 
               <!-- Botões -->
-              <div class="col-12 d-flex gap-3 flex-wrap align-items-center" style="margin-top: 0.5rem;">
+              <div class="col-12 d-flex gap-3 flex-wrap align-items-center" style="margin-top:.5rem">
                 <button class="btn-salvar" id="btnSalvar" type="button">
                   <i class="bi bi-floppy-fill"></i> Salvar Veículo
                 </button>
@@ -1272,33 +399,21 @@
                   <i class="bi bi-x-lg"></i> Cancelar Edição
                 </button>
               </div>
-
             </div>
           </div>
-          <!-- FIM: FORMULÁRIO -->
+          <!-- FIM FORMULÁRIO -->
 
-
-          <!-- TABELA DE VEÍCULOS CADASTRADOS -->
+          <!-- TABELA -->
           <div class="table-section">
             <div class="table-header">
-              <span class="table-header-title">
-                <i class="bi bi-table me-2" style="color:var(--color-gold)"></i>
-                Veículos no Estoque
-              </span>
+              <span class="table-header-title"><i class="bi bi-table me-2" style="color:var(--color-gold)"></i>Veículos no Estoque</span>
               <div class="table-search-wrapper">
                 <i class="bi bi-search"></i>
-                <input
-                  type="search"
-                  id="buscaTabela"
-                  class="table-search"
-                  placeholder="Filtrar na tabela..."
-                  autocomplete="off"
-                />
+                <input type="search" id="buscaTabela" class="table-search" placeholder="Filtrar na tabela..." autocomplete="off" />
               </div>
             </div>
-
-            <div style="overflow-x: auto;">
-              <table class="veiculos-table" id="tabelaVeiculos" aria-label="Tabela de veículos">
+            <div style="overflow-x:auto">
+              <table class="veiculos-table" id="tabelaVeiculos">
                 <thead>
                   <tr>
                     <th>Foto</th>
@@ -1306,63 +421,47 @@
                     <th>Ano</th>
                     <th>Km</th>
                     <th>Preço</th>
+                    <th>Fotos</th>
+                    <th>Status</th>
                     <th>Ações</th>
                   </tr>
                 </thead>
-                <tbody id="tabelaCorpo">
-                  <!-- Preenchida pelo JavaScript -->
-                </tbody>
+                <tbody id="tabelaCorpo"></tbody>
               </table>
-
-              <!-- Mensagem quando não há veículos -->
               <div id="tabelaVazia" class="table-empty d-none">
                 <i class="bi bi-inbox"></i>
-                <p>Nenhum veículo encontrado.<br/>
-                  <span style="font-size:0.82rem;">Adicione um veículo usando o formulário acima.</span>
-                </p>
+                <p>Nenhum veículo encontrado.<br/><span style="font-size:.82rem">Adicione usando o formulário acima.</span></p>
               </div>
             </div>
           </div>
-          <!-- FIM: TABELA -->
+          <!-- FIM TABELA -->
 
         </div>
-        <!-- FIM: ABA VEÍCULOS -->
+        <!-- FIM ABA VEÍCULOS -->
 
-      </div>
-      <!-- FIM: admin-content -->
-    </div>
-    <!-- FIM: admin-main -->
-  </div>
+      </div><!-- /admin-content -->
+    </div><!-- /admin-main -->
+  </div><!-- /admin-layout -->
 </div>
-<!-- FIM: PAINEL ADMIN -->
+<!-- ====================== FIM PAINEL ====================== -->
 
 
-<!-- ============================================================
-  MODAL DE CONFIRMAÇÃO DE EXCLUSÃO
-  Aparece ao clicar em "Excluir" em qualquer linha da tabela.
-============================================================ -->
-<div class="confirm-overlay" id="confirmOverlay" role="dialog" aria-modal="true" aria-labelledby="confirmTitulo">
+<!-- MODAL CONFIRMAÇÃO EXCLUSÃO -->
+<div class="confirm-overlay" id="confirmOverlay">
   <div class="confirm-card">
     <i class="bi bi-trash3-fill confirm-icon"></i>
-    <h3 class="confirm-title" id="confirmTitulo">Excluir Veículo</h3>
+    <h3 class="confirm-title">Excluir Veículo</h3>
     <p class="confirm-msg" id="confirmMsg">Esta ação não pode ser desfeita.</p>
     <div class="confirm-actions">
       <button class="btn-confirm-cancelar" id="btnConfirmCancelar">Cancelar</button>
-      <button class="btn-confirm-excluir" id="btnConfirmExcluir">
-        <i class="bi bi-trash3-fill me-1"></i> Excluir
-      </button>
+      <button class="btn-confirm-excluir" id="btnConfirmExcluir"><i class="bi bi-trash3-fill me-1"></i>Excluir</button>
     </div>
   </div>
 </div>
 
-<!-- Área onde os toasts são exibidos -->
 <div class="toast-container-custom" id="toastContainer"></div>
 
-<!-- Bootstrap JS (necessário para comportamentos de collapse etc.) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-<!-- Script do painel admin -->
 <script src="admin.js"></script>
-
 </body>
 </html>
