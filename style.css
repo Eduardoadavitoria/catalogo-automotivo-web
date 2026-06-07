@@ -1,170 +1,239 @@
 /*
   ============================================================
-  MOSTRUÁRIO DE VEÍCULOS — ADGVeiculos
-  Arquivo: style.css
-  Descrição: Estilos personalizados que complementam o Bootstrap.
-  Paleta escolhida: Tons de carvão escuro (#0f1117), dourado
-  (#c9a227) e branco, remetendo a luxo, sofisticação e confiança —
-  referências visuais de marcas premium do setor automotivo.
+  ADGveiculos — style.css
+  SISTEMA DE TEMAS DARK / LIGHT
+  
+  Funcionamento:
+    O atributo data-theme no <html> controla o tema ativo.
+    :root[data-theme="dark"]  → paleta escura (carvão + dourado)
+    :root[data-theme="light"] → paleta clara (branco + azul + vermelho)
+  
+  O JavaScript alterna esse atributo e salva no localStorage.
+  Todas as regras de estilo usam variáveis CSS (var(--...))
+  então mudar o tema = reatribuir as variáveis = zero duplication.
   ============================================================
 */
 
 /* ============================================================
-   1. VARIÁVEIS CSS GLOBAIS (Custom Properties)
-   Definir cores, fontes e espaçamentos como variáveis permite
-   manter consistência e facilita manutenção futura.
-   Acessadas em todo o arquivo com var(--nome-da-variavel).
+   TEMA ESCURO  (padrão / dark)
+   Paleta: Carvão #0f1117, dourado #c9a227, branco suave
+   Transmite: luxo, sofisticação, confiança premium
 ============================================================ */
-:root {
-  /* Paleta principal */
-  --color-bg:          #0f1117;   /* Fundo geral: quase preto */
-  --color-surface:     #181b24;   /* Superfícies de cards e seções */
-  --color-surface-2:   #1e2130;   /* Superfície um nível mais claro */
-  --color-border:      #2a2f42;   /* Bordas sutis */
+:root,
+:root[data-theme="dark"] {
+  --color-bg:        #0f1117;
+  --color-surface:   #181b24;
+  --color-surface-2: #1e2130;
+  --color-border:    #2a2f42;
 
-  /* Accent / destaque dourado — transmite prestígio */
-  --color-gold:        #c9a227;
-  --color-gold-light:  #e0ba50;
-  --color-gold-dark:   #a07d15;
+  --color-accent:       #c9a227;
+  --color-accent-light: #e0ba50;
+  --color-accent-dark:  #a07d15;
+  --color-accent-rgb:   201, 162, 39;
 
-  /* Texto */
+  /* Segundo destaque (preço nos cards) */
+  --color-price:     #c9a227;
+
   --color-text-primary:   #f0f2f8;
   --color-text-secondary: #8a91a8;
   --color-text-muted:     #555e78;
+  --color-text-on-accent: #0f1117;
 
-  /* Tipografia */
-  --font-display: 'Barlow Condensed', sans-serif;  /* Títulos impactantes */
-  --font-body:    'Lato', sans-serif;              /* Corpo legível */
+  --navbar-bg:       rgba(15, 17, 23, 0.96);
+  --section-alt-bg:  #181b24;
 
-  /* Espaçamentos e radii */
-  --radius-card:  12px;
-  --radius-btn:   6px;
-  --shadow-card:  0 4px 24px rgba(0, 0, 0, 0.45);
-  --shadow-hover: 0 8px 40px rgba(201, 162, 39, 0.2);
+  --hero-overlay: linear-gradient(135deg,
+    rgba(10,12,18,0.88) 0%,
+    rgba(10,12,18,0.68) 55%,
+    rgba(10,12,18,0.84) 100%);
 
-  /* Transições */
+  --shadow-card:  0 4px 24px rgba(0,0,0,0.45);
+  --shadow-hover: 0 8px 40px rgba(201,162,39,0.2);
+
+  --scrollbar-thumb:       #2a2f42;
+  --scrollbar-thumb-hover: #a07d15;
+
+  /* toggler mobile cor */
+  --toggler-filter: invert(1);
+
+  /* Aliases backward-compat */
+  --color-gold:       #c9a227;
+  --color-gold-light: #e0ba50;
+  --color-gold-dark:  #a07d15;
+  --radius-card: 12px;
+  --radius-btn:  6px;
   --transition-fast: 0.2s ease;
   --transition-med:  0.35s ease;
 }
 
+/* ============================================================
+   TEMA CLARO  (light)
+   Paleta: Branco #f4f6fb, Azul #1a4fa0, Vermelho #d0222b
+   Transmite: dinamismo, acessibilidade, revendedora moderna
+============================================================ */
+:root[data-theme="light"] {
+  --color-bg:        #f2f5fc;
+  --color-surface:   #ffffff;
+  --color-surface-2: #e8edf8;
+  --color-border:    #ccd4ea;
+
+  --color-accent:       #1a4fa0;
+  --color-accent-light: #2e6fd4;
+  --color-accent-dark:  #0f3070;
+  --color-accent-rgb:   26, 79, 160;
+
+  /* Vermelho: preço, badges de destaque */
+  --color-price:     #d0222b;
+  --color-red:       #d0222b;
+  --color-red-light: #e8414a;
+  --color-red-dark:  #a81820;
+
+  --color-text-primary:   #0d1b3e;
+  --color-text-secondary: #4a5578;
+  --color-text-muted:     #8a93b0;
+  --color-text-on-accent: #ffffff;
+
+  --navbar-bg:      rgba(255,255,255,0.97);
+  --section-alt-bg: #e2e9f7;
+
+  --hero-overlay: linear-gradient(135deg,
+    rgba(13,27,62,0.82) 0%,
+    rgba(26,79,160,0.58) 55%,
+    rgba(208,34,43,0.30) 100%);
+
+  --shadow-card:  0 2px 16px rgba(13,27,62,0.10);
+  --shadow-hover: 0 6px 32px rgba(26,79,160,0.18);
+
+  --scrollbar-thumb:       #ccd4ea;
+  --scrollbar-thumb-hover: #1a4fa0;
+
+  --toggler-filter: none;
+
+  --color-gold:       #1a4fa0;
+  --color-gold-light: #2e6fd4;
+  --color-gold-dark:  #0f3070;
+  --radius-card: 12px;
+  --radius-btn:  6px;
+  --transition-fast: 0.2s ease;
+  --transition-med:  0.35s ease;
+}
 
 /* ============================================================
-   2. RESET E BASE GLOBAL
-   Aplica a fonte e cor padrão a todos os elementos.
-   O "box-sizing: border-box" garante que padding e border
-   não extrapolem a largura definida — boa prática essencial.
+   RESET E BASE
 ============================================================ */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html {
-  scroll-behavior: smooth; /* Rola suavemente ao clicar em âncoras (#estoque) */
-}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
 
 body {
-  font-family: var(--font-body);
+  font-family: 'Lato', sans-serif;
   background-color: var(--color-bg);
   color: var(--color-text-primary);
   line-height: 1.6;
-  -webkit-font-smoothing: antialiased; /* Melhor renderização de texto em WebKit */
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.4s ease, color 0.3s ease;
 }
 
-/* Remove o sublinhado padrão de links e herda cor do pai */
-a {
-  text-decoration: none;
-  color: inherit;
-}
-
+a { text-decoration: none; color: inherit; }
 
 /* ============================================================
-   3. NAVBAR
-   Sobrescreve os estilos padrão do Bootstrap para o tema escuro.
+   NAVBAR
 ============================================================ */
 #mainNavbar {
-  background-color: rgba(15, 17, 23, 0.95);
+  background-color: var(--navbar-bg);
   border-bottom: 1px solid var(--color-border);
   padding: 0.9rem 0;
-
-  /* Efeito blur: cria sensação de glassmorphism moderno */
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-
-  /* Fixa a navbar no topo ao rolar a página */
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   position: sticky;
   top: 0;
   z-index: 1000;
+  transition: background-color 0.4s ease, border-color 0.3s ease;
 }
 
-/* Logotipo */
 .brand-name {
-  font-family: var(--font-display);
+  font-family: 'Barlow Condensed', sans-serif;
   font-size: 1.7rem;
   font-weight: 800;
   letter-spacing: 0.04em;
   color: var(--color-text-primary);
   text-transform: uppercase;
+  transition: color 0.3s ease;
 }
 
-.brand-accent {
-  color: var(--color-gold); /* Palavra "Prime" em dourado */
-}
+.brand-accent { color: var(--color-accent); }
+.brand-icon   { font-size: 1.5rem; color: var(--color-accent); }
 
-.brand-icon {
-  font-size: 1.5rem;
-  color: var(--color-gold);
-}
-
-/* Links do menu */
 .navbar-nav .nav-link {
   color: var(--color-text-secondary);
-  font-family: var(--font-body);
   font-weight: 700;
   font-size: 0.85rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   padding: 0.5rem 0.75rem;
-  transition: color var(--transition-fast);
+  transition: color 0.2s ease;
 }
 
 .navbar-nav .nav-link:hover,
-.navbar-nav .nav-link.active {
-  color: var(--color-gold);
-}
+.navbar-nav .nav-link.active { color: var(--color-accent); }
 
-/* Botão de telefone na navbar */
 .btn-nav {
   background: transparent;
-  border: 1px solid var(--color-gold) !important;
+  border: 1px solid var(--color-accent) !important;
   border-radius: var(--radius-btn);
-  color: var(--color-gold) !important;
+  color: var(--color-accent) !important;
   padding: 0.4rem 1rem !important;
-  transition: all var(--transition-fast);
+  transition: all 0.2s ease;
 }
 
 .btn-nav:hover {
-  background: var(--color-gold);
-  color: var(--color-bg) !important;
+  background: var(--color-accent);
+  color: var(--color-text-on-accent) !important;
 }
 
-/* Botão hambúrguer (mobile): adapta ao tema escuro */
-.navbar-toggler {
-  border-color: var(--color-border);
-}
-
-.navbar-toggler-icon {
-  filter: invert(1);
-}
-
+.navbar-toggler { border-color: var(--color-border); }
+.navbar-toggler-icon { filter: var(--toggler-filter); }
 
 /* ============================================================
-   4. SEÇÃO HERO
-   Fundo com imagem placeholder escurecida + overlay gradiente.
-   O overlay garante legibilidade do texto sobre qualquer imagem.
+   BOTÃO DE ALTERNÂNCIA DE TEMA
+   Pill discreto na navbar. Ícone + label mudam via CSS
+   usando seletores [data-theme="light"] no <html>.
+============================================================ */
+#btnTema {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: 20px;
+  color: var(--color-text-secondary);
+  font-family: 'Lato', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.85rem 0.35rem 0.65rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+#btnTema:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  background: rgba(var(--color-accent-rgb), 0.07);
+  transform: translateY(-1px);
+}
+
+/* Ícone: sol visível no tema dark (indica "mudar para claro") */
+#btnTema .icon-dark { display: flex; align-items: center; gap: 0.4rem; }
+#btnTema .icon-light { display: none;  align-items: center; gap: 0.4rem; }
+
+:root[data-theme="light"] #btnTema .icon-dark  { display: none; }
+:root[data-theme="light"] #btnTema .icon-light { display: flex; }
+
+/* ============================================================
+   HERO
 ============================================================ */
 .hero-section {
   position: relative;
@@ -172,127 +241,118 @@ a {
   display: flex;
   align-items: center;
   justify-content: center;
-
-  /*
-    Imagem de fundo via URL pública gratuita (Unsplash).
-    Em produção, substituir por imagem real da loja.
-    object-fit: cover garante que a imagem cubra todo o espaço.
-  */
   background-image: url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=1600&q=80');
   background-size: cover;
   background-position: center;
-  background-attachment: fixed; /* Efeito parallax sutil ao rolar */
+  background-attachment: fixed;
   overflow: hidden;
 }
 
-/* Overlay escuro sobre a imagem de fundo */
 .hero-overlay {
   position: absolute;
-  inset: 0; /* equivalente a top:0; right:0; bottom:0; left:0 */
-  background: linear-gradient(
-    135deg,
-    rgba(10, 12, 18, 0.88) 0%,
-    rgba(10, 12, 18, 0.70) 60%,
-    rgba(10, 12, 18, 0.85) 100%
-  );
+  inset: 0;
+  background: var(--hero-overlay);
+  transition: background 0.5s ease;
 }
 
 .hero-content {
-  position: relative; /* Garante que fique acima do overlay */
+  position: relative;
   z-index: 1;
   max-width: 780px;
   padding: 2rem 1rem;
-  animation: fadeInUp 0.9s ease both; /* Animação de entrada */
+  animation: fadeInUp 0.9s ease both;
 }
 
-/* Linha de texto pequena acima do título */
+/* Texto do hero: sempre claro (está sobre imagem escurecida) */
 .hero-eyebrow {
-  font-family: var(--font-body);
   font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.25em;
   text-transform: uppercase;
-  color: var(--color-gold);
+  color: rgba(255,255,255,0.78);
   margin-bottom: 1rem;
 }
 
+:root[data-theme="light"] .hero-eyebrow { color: #a8ceff; }
+
 .hero-title {
-  font-family: var(--font-display);
-  font-size: clamp(2.8rem, 7vw, 5.5rem); /* Tamanho fluido conforme viewport */
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(2.8rem, 7vw, 5.5rem);
   font-weight: 800;
   line-height: 1.05;
   letter-spacing: -0.01em;
   text-transform: uppercase;
-  color: var(--color-text-primary);
+  color: #ffffff;
 }
 
-/* Frase destacada em dourado dentro do título */
 .hero-highlight {
-  color: var(--color-gold);
   display: inline-block;
   position: relative;
 }
 
+/* Dark: highlight dourado  |  Light: highlight vermelho vivo */
+:root[data-theme="dark"]  .hero-highlight { color: var(--color-accent); }
+:root[data-theme="light"] .hero-highlight { color: #ff7070; }
+
 .hero-subtitle {
   font-size: 1.05rem;
-  color: var(--color-text-secondary);
+  color: rgba(255,255,255,0.72);
   max-width: 520px;
   margin: 1.5rem auto 0;
 }
 
-/* Botão primário personalizado (CTA — Call To Action) */
+/* ============================================================
+   BOTÃO CTA PRINCIPAL
+============================================================ */
 .btn-primary-custom {
-  background: var(--color-gold);
+  background: var(--color-accent);
   border: none;
-  color: var(--color-bg);
-  font-family: var(--font-display);
+  color: var(--color-text-on-accent);
+  font-family: 'Barlow Condensed', sans-serif;
   font-size: 1rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   padding: 0.75rem 2.2rem;
   border-radius: var(--radius-btn);
-  transition: all var(--transition-fast);
+  transition: all 0.2s ease;
   display: inline-flex;
   align-items: center;
 }
 
 .btn-primary-custom:hover {
-  background: var(--color-gold-light);
-  color: var(--color-bg);
+  background: var(--color-accent-light);
+  color: var(--color-text-on-accent);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(201, 162, 39, 0.4);
+  box-shadow: 0 6px 20px rgba(var(--color-accent-rgb), 0.4);
 }
 
-.btn-primary-custom:active {
-  transform: translateY(0);
-}
-
+.btn-primary-custom:active { transform: translateY(0); }
 
 /* ============================================================
-   5. SEÇÃO ESTOQUE
+   SEÇÃO ESTOQUE
 ============================================================ */
 .section-estoque {
   padding: 6rem 0;
   background-color: var(--color-bg);
+  transition: background-color 0.4s ease;
 }
 
-/* Cabeçalho de seção */
 .section-tag {
   display: inline-block;
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.25em;
   text-transform: uppercase;
-  color: var(--color-gold);
-  border: 1px solid var(--color-gold-dark);
+  color: var(--color-accent);
+  border: 1px solid var(--color-accent-dark);
   padding: 0.25rem 0.85rem;
   border-radius: 2rem;
-  background: rgba(201, 162, 39, 0.08);
+  background: rgba(var(--color-accent-rgb), 0.08);
 }
 
 .section-title {
-  font-family: var(--font-display);
+  font-family: 'Barlow Condensed', sans-serif;
   font-size: clamp(2rem, 4vw, 3rem);
   font-weight: 800;
   text-transform: uppercase;
@@ -308,58 +368,45 @@ a {
   margin: 0.5rem auto 0;
 }
 
-
 /* ============================================================
-   6. BARRA DE BUSCA
-   Estilização personalizada do <input> de busca.
-   O ícone de lupa é posicionado absolutamente dentro do wrapper.
+   BARRA DE BUSCA
 ============================================================ */
-.search-wrapper {
-  position: relative;
-}
+.search-wrapper { position: relative; }
 
 .search-icon {
   position: absolute;
   left: 1rem;
   top: 50%;
   transform: translateY(-50%);
-  color: var(--color-gold);
+  color: var(--color-accent);
   font-size: 1rem;
-  z-index: 2; /* Mantém acima do input */
-  pointer-events: none; /* Clique passa direto para o input */
+  z-index: 2;
+  pointer-events: none;
 }
 
 .search-input {
-  background-color: var(--color-surface-2);
+  background-color: var(--color-surface);
   border: 1px solid var(--color-border);
   color: var(--color-text-primary);
-  padding: 0.85rem 1rem 0.85rem 2.8rem; /* Espaço à esquerda para o ícone */
+  padding: 0.85rem 1rem 0.85rem 2.8rem;
   border-radius: var(--radius-btn);
   font-size: 1rem;
   width: 100%;
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.4s ease;
 }
 
-/* Remove o fundo branco padrão do Bootstrap ao focar */
 .search-input:focus {
-  background-color: var(--color-surface-2);
+  background-color: var(--color-surface);
   color: var(--color-text-primary);
-  border-color: var(--color-gold);
-  box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.15);
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(var(--color-accent-rgb), 0.15);
   outline: none;
 }
 
-/* Cor do placeholder */
-.search-input::placeholder {
-  color: var(--color-text-muted);
-}
-
+.search-input::placeholder { color: var(--color-text-muted); }
 
 /* ============================================================
-   7. CARDS DE VEÍCULOS
-   Cada card é um Bootstrap Card personalizado.
-   A classe .vehicle-card é adicionada pelo JavaScript ao gerar
-   cada card dinamicamente.
+   CARDS DE VEÍCULOS
 ============================================================ */
 .vehicle-card {
   background-color: var(--color-surface);
@@ -367,50 +414,45 @@ a {
   border-radius: var(--radius-card);
   overflow: hidden;
   box-shadow: var(--shadow-card);
-  transition: transform var(--transition-med), box-shadow var(--transition-med), border-color var(--transition-med);
-  height: 100%; /* Garante que todos os cards tenham a mesma altura na linha */
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease,
+    border-color 0.25s ease,
+    background-color 0.4s ease;
+  height: 100%;
   display: flex;
   flex-direction: column;
-
-  /* Animação de entrada ao ser inserido no DOM */
   animation: fadeInUp 0.5s ease both;
 }
 
 .vehicle-card:hover {
-  transform: translateY(-6px); /* Sobe sutilmente ao passar o mouse */
+  transform: translateY(-6px);
   box-shadow: var(--shadow-hover);
-  border-color: var(--color-gold-dark);
+  border-color: var(--color-accent-dark);
 }
 
-/* Container da imagem do veículo */
 .card-img-wrapper {
   position: relative;
   overflow: hidden;
-  height: 210px; /* Altura fixa para uniformidade visual */
+  height: 210px;
 }
 
 .card-img-wrapper img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Corta a imagem para preencher o espaço sem distorcer */
+  object-fit: cover;
   display: block;
   transition: transform 0.5s ease;
 }
 
-/* Zoom na imagem ao passar o mouse no card */
-.vehicle-card:hover .card-img-wrapper img {
-  transform: scale(1.06);
-}
+.vehicle-card:hover .card-img-wrapper img { transform: scale(1.06); }
 
-/* Badge de marca sobre a imagem */
+/* Badge de marca: escuro=dourado, claro=azul sobre branco */
 .card-badge {
   position: absolute;
   top: 0.75rem;
   left: 0.75rem;
-  background: rgba(10, 12, 18, 0.85);
-  border: 1px solid var(--color-gold-dark);
-  color: var(--color-gold);
-  font-family: var(--font-display);
+  font-family: 'Barlow Condensed', sans-serif;
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -418,18 +460,30 @@ a {
   padding: 0.2rem 0.65rem;
   border-radius: 4px;
   backdrop-filter: blur(4px);
+  transition: all 0.3s ease;
 }
 
-/* Corpo do card */
+:root[data-theme="dark"] .card-badge {
+  background: rgba(10,12,18,0.85);
+  border: 1px solid var(--color-accent-dark);
+  color: var(--color-accent);
+}
+
+:root[data-theme="light"] .card-badge {
+  background: rgba(255,255,255,0.92);
+  border: 1px solid var(--color-accent);
+  color: var(--color-accent);
+}
+
 .card-body-custom {
   padding: 1.25rem 1.4rem;
   display: flex;
   flex-direction: column;
-  flex: 1; /* Empurra o rodapé do card para baixo */
+  flex: 1;
 }
 
 .card-modelo {
-  font-family: var(--font-display);
+  font-family: 'Barlow Condensed', sans-serif;
   font-size: 1.35rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -439,12 +493,7 @@ a {
   margin-bottom: 0.6rem;
 }
 
-/* Lista de especificações (ano, km) */
-.card-specs {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
+.card-specs { display: flex; gap: 1rem; margin-bottom: 1rem; }
 
 .spec-item {
   display: flex;
@@ -454,33 +503,21 @@ a {
   color: var(--color-text-secondary);
 }
 
-.spec-item i {
-  color: var(--color-gold);
-  font-size: 0.85rem;
-}
+.spec-item i { color: var(--color-accent); font-size: 0.85rem; }
 
-/* Linha divisória entre especificações e preço */
 .card-divider {
   height: 1px;
   background: var(--color-border);
   margin: 0.75rem 0;
+  transition: background-color 0.4s ease;
 }
 
-/* Rodapé do card: preço + botão */
 .card-footer-custom {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 0.5rem;
-  margin-top: auto; /* Gruda no fundo do card */
-}
-
-.card-price {
-  font-family: var(--font-display);
-  font-size: 1.5rem;
-  font-weight: 800;
-  color: var(--color-gold);
-  line-height: 1;
+  margin-top: auto;
 }
 
 .card-price-label {
@@ -492,7 +529,15 @@ a {
   margin-bottom: 0.2rem;
 }
 
-/* Botão "Ver Detalhes" dentro do card */
+.card-price {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--color-price);
+  line-height: 1;
+  transition: color 0.3s ease;
+}
+
 .btn-card {
   background: transparent;
   border: 1px solid var(--color-border);
@@ -502,40 +547,44 @@ a {
   padding: 0.45rem 1rem;
   border-radius: var(--radius-btn);
   cursor: pointer;
-  transition: all var(--transition-fast);
+  transition: all 0.2s ease;
   white-space: nowrap;
 }
 
 .btn-card:hover {
-  border-color: var(--color-gold);
-  color: var(--color-gold);
-  background: rgba(201, 162, 39, 0.07);
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  background: rgba(var(--color-accent-rgb), 0.07);
 }
 
-
 /* ============================================================
-   8. SEÇÃO DIFERENCIAIS
+   SEÇÃO DIFERENCIAIS
 ============================================================ */
 .section-diferenciais {
   padding: 5rem 0;
-  background-color: var(--color-surface);
+  background-color: var(--section-alt-bg);
   border-top: 1px solid var(--color-border);
   border-bottom: 1px solid var(--color-border);
+  transition: background-color 0.4s ease;
 }
 
-.diferencial-item {
-  padding: 1.5rem;
-}
+.diferencial-item { padding: 1.5rem; }
 
 .diferencial-icon {
   font-size: 2rem;
-  color: var(--color-gold);
+  color: var(--color-accent);
   margin-bottom: 1rem;
   display: block;
+  transition: color 0.3s ease;
+}
+
+/* No light, ícones pares ficam vermelhos → alternância azul/vermelho */
+:root[data-theme="light"] .diferencial-item:nth-child(even) .diferencial-icon {
+  color: var(--color-red);
 }
 
 .diferencial-item h5 {
-  font-family: var(--font-display);
+  font-family: 'Barlow Condensed', sans-serif;
   font-size: 1.1rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -544,25 +593,18 @@ a {
   margin-bottom: 0.4rem;
 }
 
-.diferencial-item p {
-  font-size: 0.88rem;
-  color: var(--color-text-secondary);
-  margin: 0;
-}
-
+.diferencial-item p { font-size: 0.88rem; color: var(--color-text-secondary); margin: 0; }
 
 /* ============================================================
-   9. SEÇÃO CONTATO
+   SEÇÃO CONTATO
 ============================================================ */
 .section-contato {
   padding: 6rem 0;
   background-color: var(--color-bg);
+  transition: background-color 0.4s ease;
 }
 
-.contact-list {
-  list-style: none;
-  padding: 0;
-}
+.contact-list { list-style: none; padding: 0; }
 
 .contact-list li {
   display: flex;
@@ -574,46 +616,40 @@ a {
   border-bottom: 1px solid var(--color-border);
 }
 
-.contact-list li i {
-  color: var(--color-gold);
-  font-size: 1rem;
-  flex-shrink: 0;
-}
+.contact-list li i { color: var(--color-accent); font-size: 1rem; flex-shrink: 0; }
 
-/* Card do formulário de contato */
 .contact-form-card {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-card);
   padding: 2rem;
+  transition: background-color 0.4s ease;
 }
 
 .contact-form-card h5 {
-  font-family: var(--font-display);
+  font-family: 'Barlow Condensed', sans-serif;
   font-size: 1.3rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
 
-/* Sobrescreve inputs do Bootstrap para o tema escuro */
 .contact-form-card .form-control {
   background-color: var(--color-surface-2);
   border-color: var(--color-border);
   color: var(--color-text-primary);
   border-radius: var(--radius-btn);
+  transition: background-color 0.4s ease;
 }
 
 .contact-form-card .form-control:focus {
   background-color: var(--color-surface-2);
-  border-color: var(--color-gold);
+  border-color: var(--color-accent);
   color: var(--color-text-primary);
-  box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.15);
+  box-shadow: 0 0 0 3px rgba(var(--color-accent-rgb), 0.15);
 }
 
-.contact-form-card .form-control::placeholder {
-  color: var(--color-text-muted);
-}
+.contact-form-card .form-control::placeholder { color: var(--color-text-muted); }
 
 .contact-form-card .form-label {
   font-size: 0.82rem;
@@ -624,15 +660,15 @@ a {
   margin-bottom: 0.4rem;
 }
 
-
 /* ============================================================
-   10. MODAL DE DETALHES
+   MODAL
 ============================================================ */
 .modal-custom {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-card);
   color: var(--color-text-primary);
+  transition: background-color 0.4s ease;
 }
 
 .modal-custom .modal-header {
@@ -642,11 +678,15 @@ a {
 }
 
 .modal-custom .modal-title {
-  font-family: var(--font-display);
+  font-family: 'Barlow Condensed', sans-serif;
   font-size: 1.4rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--color-gold);
+  color: var(--color-accent);
+}
+
+:root[data-theme="light"] .btn-close-white {
+  filter: invert(1) brightness(0.15);
 }
 
 .modal-detail-img {
@@ -655,6 +695,7 @@ a {
   object-fit: cover;
   border-radius: 8px;
   margin-bottom: 1.5rem;
+  display: block;
 }
 
 .modal-specs-grid {
@@ -664,7 +705,6 @@ a {
   margin-bottom: 1.5rem;
 }
 
-/* Cada item de especificação no modal */
 .modal-spec-box {
   background: var(--color-surface-2);
   border: 1px solid var(--color-border);
@@ -683,15 +723,17 @@ a {
 }
 
 .modal-spec-box strong {
-  font-family: var(--font-display);
+  font-family: 'Barlow Condensed', sans-serif;
   font-size: 1.05rem;
   font-weight: 700;
   color: var(--color-text-primary);
 }
 
 .modal-price-box {
-  background: linear-gradient(135deg, rgba(201, 162, 39, 0.12), rgba(201, 162, 39, 0.05));
-  border: 1px solid var(--color-gold-dark);
+  background: linear-gradient(135deg,
+    rgba(var(--color-accent-rgb), 0.10),
+    rgba(var(--color-accent-rgb), 0.03));
+  border: 1px solid var(--color-accent-dark);
   border-radius: 8px;
   padding: 1rem 1.25rem;
   display: flex;
@@ -702,11 +744,12 @@ a {
 }
 
 .modal-price-value {
-  font-family: var(--font-display);
+  font-family: 'Barlow Condensed', sans-serif;
   font-size: 2rem;
   font-weight: 800;
-  color: var(--color-gold);
+  color: var(--color-price);
   line-height: 1;
+  transition: color 0.3s ease;
 }
 
 .modal-price-label {
@@ -716,116 +759,26 @@ a {
   letter-spacing: 0.08em;
 }
 
-
 /* ============================================================
-   11. RODAPÉ
+   RODAPÉ
 ============================================================ */
 .site-footer {
   background-color: var(--color-surface);
   border-top: 1px solid var(--color-border);
   padding: 2.5rem 0;
+  transition: background-color 0.4s ease, border-color 0.3s ease;
 }
 
-.footer-brand {
-  font-size: 1.4rem;
-  display: block;
-  margin-bottom: 0.25rem;
+:root[data-theme="light"] .site-footer {
+  border-top: 3px solid var(--color-accent);
 }
 
-.footer-tagline {
-  font-size: 0.82rem;
-  color: var(--color-text-muted);
-  margin: 0;
-}
-
-.footer-copy,
-.footer-dev {
-  font-size: 0.8rem;
-  color: var(--color-text-muted);
-  margin: 0;
-  line-height: 1.7;
-}
-
+.footer-brand { font-size: 1.4rem; display: block; margin-bottom: 0.25rem; }
+.footer-tagline { font-size: 0.82rem; color: var(--color-text-muted); margin: 0; }
+.footer-copy, .footer-dev { font-size: 0.8rem; color: var(--color-text-muted); margin: 0; line-height: 1.7; }
 
 /* ============================================================
-   12. ANIMAÇÕES CSS
-   @keyframes definem a sequência de movimento/opacidade.
-   A animação "fadeInUp" é usada nos cards e no hero.
-============================================================ */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(24px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Atraso escalonado para cada card (staggered animation).
-   Os atributos são aplicados inline pelo JavaScript. */
-.vehicle-card:nth-child(1) { animation-delay: 0.05s; }
-.vehicle-card:nth-child(2) { animation-delay: 0.10s; }
-.vehicle-card:nth-child(3) { animation-delay: 0.15s; }
-.vehicle-card:nth-child(4) { animation-delay: 0.20s; }
-.vehicle-card:nth-child(5) { animation-delay: 0.25s; }
-.vehicle-card:nth-child(6) { animation-delay: 0.30s; }
-.vehicle-card:nth-child(7) { animation-delay: 0.35s; }
-.vehicle-card:nth-child(8) { animation-delay: 0.40s; }
-
-
-/* ============================================================
-   13. UTILITÁRIOS E AJUSTES RESPONSIVOS
-   Media queries adicionam ajustes finos para telas maiores.
-   O Bootstrap já cuida da maioria com seu sistema de grid,
-   mas personalizações visuais precisam ser feitas manualmente.
-============================================================ */
-
-/* Telas pequenas: padding reduzido nas seções */
-@media (max-width: 576px) {
-  .section-estoque,
-  .section-contato {
-    padding: 4rem 0;
-  }
-
-  .hero-section {
-    background-attachment: scroll; /* Parallax desativado no mobile (performance) */
-  }
-
-  .modal-specs-grid {
-    grid-template-columns: 1fr; /* 1 coluna no mobile */
-  }
-}
-
-/* Scrollbar personalizada (navegadores WebKit: Chrome, Safari, Edge) */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--color-bg);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--color-border);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-gold-dark);
-}
-
-/* Seleção de texto com cor da marca */
-::selection {
-  background: var(--color-gold);
-  color: var(--color-bg);
-}
-
-/* ============================================================
-   BOTÃO ADMIN DISCRETO (rodapé do site)
-   Pequeno ícone de cadeado. Sem texto, sem destaque.
-   Quem não sabe que existe, não percebe.
+   BOTÃO ADMIN DISCRETO
 ============================================================ */
 .btn-admin-discreto {
   display: inline-flex;
@@ -845,49 +798,46 @@ a {
 
 .btn-admin-discreto:hover {
   opacity: 1;
-  border-color: var(--color-gold-dark);
-  color: var(--color-gold);
-  background: rgba(201, 162, 39, 0.07);
+  border-color: var(--color-accent-dark);
+  color: var(--color-accent);
+  background: rgba(var(--color-accent-rgb), 0.07);
 }
 
 /* ============================================================
-   BADGE DE FOTOS NOS CARDS
-   Exibido quando o veículo tem mais de uma foto.
+   BADGE DE FOTOS
 ============================================================ */
 .card-badge-fotos {
   position: absolute;
   bottom: 0.6rem;
   right: 0.6rem;
-  background: rgba(10, 12, 18, 0.82);
-  border: 1px solid rgba(201, 162, 39, 0.35);
-  color: var(--color-gold);
   font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.06em;
   padding: 0.18rem 0.55rem;
   border-radius: 4px;
   backdrop-filter: blur(4px);
+  transition: all 0.3s ease;
+}
+
+:root[data-theme="dark"] .card-badge-fotos {
+  background: rgba(10,12,18,0.82);
+  border: 1px solid rgba(var(--color-accent-rgb), 0.4);
+  color: var(--color-accent);
+}
+
+:root[data-theme="light"] .card-badge-fotos {
+  background: rgba(255,255,255,0.92);
+  border: 1px solid var(--color-accent);
+  color: var(--color-accent);
 }
 
 /* ============================================================
-   MODAL — GALERIA DE FOTOS
-   Estilos do carrossel Bootstrap dentro do modal.
+   GALERIA / CARROSSEL
 ============================================================ */
-.modal-detail-img {
-  width: 100%;
-  height: 260px;
-  object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 1.5rem;
-  display: block;
-}
-
-.modal-carousel-indicators {
-  bottom: -1.5rem !important;
-}
+.modal-carousel-indicators { bottom: -1.5rem !important; }
 
 .modal-carousel-indicators [data-bs-target] {
-  background-color: var(--color-gold) !important;
+  background-color: var(--color-accent) !important;
   opacity: 0.4;
   width: 8px;
   height: 8px;
@@ -895,9 +845,7 @@ a {
   border: none;
 }
 
-.modal-carousel-indicators .active {
-  opacity: 1 !important;
-}
+.modal-carousel-indicators .active { opacity: 1 !important; }
 
 .modal-foto-contador {
   font-size: 0.75rem;
@@ -907,3 +855,50 @@ a {
   text-align: center;
 }
 
+/* ============================================================
+   ANIMAÇÕES
+============================================================ */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes themePop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.18) rotate(12deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+.btn-tema-pop i { animation: themePop 0.4s ease both; }
+
+/* Stagger nos cards */
+.vehicle-card:nth-child(1) { animation-delay: 0.05s; }
+.vehicle-card:nth-child(2) { animation-delay: 0.10s; }
+.vehicle-card:nth-child(3) { animation-delay: 0.15s; }
+.vehicle-card:nth-child(4) { animation-delay: 0.20s; }
+.vehicle-card:nth-child(5) { animation-delay: 0.25s; }
+.vehicle-card:nth-child(6) { animation-delay: 0.30s; }
+.vehicle-card:nth-child(7) { animation-delay: 0.35s; }
+.vehicle-card:nth-child(8) { animation-delay: 0.40s; }
+
+/* ============================================================
+   RESPONSIVIDADE
+============================================================ */
+@media (max-width: 576px) {
+  .section-estoque, .section-contato { padding: 4rem 0; }
+  .hero-section { background-attachment: scroll; }
+  .modal-specs-grid { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+   SCROLLBAR
+============================================================ */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--color-bg); }
+::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover); }
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-text-on-accent);
+}

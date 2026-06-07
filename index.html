@@ -1,20 +1,20 @@
 <!DOCTYPE html>
-  <!-- 
+<!--
   ============================================================
-  MOSTRUÁRIO DE VEÍCULOS
+  MOSTRUÁRIO DE VEÍCULOS SEMINOVOS — ADG-Veículos
   Arquivo: index.html
-  
-  Autor: Eduardo Almeida da Vitória
-  Descrição: Estrutura inicial do projeto (protótipo em desenvolvimento)
-  ============================================================ 
+  Descrição: Estrutura principal da aplicação. Utiliza HTML5
+  semântico com Bootstrap 5 para layout responsivo (Mobile First).
+  Autor: Protótipo de Estágio — ADS
+  ============================================================
 -->
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="dark">
 
 <head>
   <meta charset="UTF-8" />
   <!-- Meta viewport: essencial para responsividade em dispositivos móveis (Mobile First) -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ADGVEICULOS | Seminovos de Qualidade</title>
+  <title>ADGveiculos | Seminovos de Qualidade</title>
 
   <!-- Bootstrap 5.3 via CDN: fornece o sistema de grid, Navbar, Cards e demais componentes -->
   <link rel="stylesheet"
@@ -66,9 +66,24 @@
           <li class="nav-item"><a class="nav-link" href="#estoque">Estoque</a></li>
           <li class="nav-item"><a class="nav-link" href="#contato">Contato</a></li>
           <li class="nav-item">
-            <a class="nav-link btn-nav" href="tel:+5527998956099">
-              <i class="bi bi-telephone-fill me-1"></i>(27) 99895-6099
+            <a class="nav-link btn-nav" href="tel:+5527999999999">
+              <i class="bi bi-telephone-fill me-1"></i>(27) 99999-9999
             </a>
+          </li>
+          <!-- Botão de alternância de tema Dark/Light -->
+          <li class="nav-item">
+            <button id="btnTema" aria-label="Alternar tema de cores" title="Alternar tema">
+              <!-- Ícone e label para o tema DARK (quando está no dark, mostra "mudar p/ claro") -->
+              <span class="icon-dark">
+                <i class="bi bi-sun-fill" style="font-size:0.9rem"></i>
+                <span>Claro</span>
+              </span>
+              <!-- Ícone e label para o tema LIGHT (quando está no light, mostra "mudar p/ escuro") -->
+              <span class="icon-light">
+                <i class="bi bi-moon-fill" style="font-size:0.85rem"></i>
+                <span>Escuro</span>
+              </span>
+            </button>
           </li>
         </ul>
       </div>
@@ -223,9 +238,9 @@
           <h2 class="section-title mt-2">Pronto para fazer um bom negócio?</h2>
           <p class="mt-3 text-muted">Nossa equipe está disponível de segunda a sábado, das 8h às 18h, para tirar todas as suas dúvidas.</p>
           <ul class="contact-list mt-4">
-            <li><i class="bi bi-geo-alt-fill"></i> Av. Jose Agostini, 182, Centro, Fundão - ES</li>
+            <li><i class="bi bi-geo-alt-fill"></i> Av. Jose Agostini,182, centro,Fundão ES</li>
             <li><i class="bi bi-telephone-fill"></i> (27) 99895-6099</li>
-            <li><i class="bi bi-envelope-fill"></i> adgveiculos@hotmail.com.</li>
+            <li><i class="bi bi-envelope-fill"></i> adgveiculos@hotmail.com</li>
           </ul>
         </div>
         <div class="col-12 col-lg-6">
@@ -268,7 +283,7 @@
           <p class="footer-tagline">Seminovos de confiança desde 2010.</p>
         </div>
         <div class="col-12 col-md-6 text-center text-md-end">
-          <p class="footer-copy">&copy; 2025 ADGVEICULOS. Todos os direitos reservados.</p>
+          <p class="footer-copy">&copy; 2025 ADGveiculos. Todos os direitos reservados.</p>
           <p class="footer-dev">Protótipo desenvolvido para Estágio Obrigatório — ADS</p>
           <!-- Botão admin discreto: visível apenas para quem sabe que existe -->
           <a href="admin.html" class="btn-admin-discreto" title="Acesso Administrativo">

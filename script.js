@@ -2,13 +2,52 @@
   ============================================================
   MOSTRUÁRIO DE VEÍCULOS — ADGVeiculos
   Arquivo: script.js
-  Descrição: Lógica do site público.
-    1. Lê veículos do localStorage (sincronizado com o admin)
-    2. Renderiza cards filtrando veículos ocultos
-    3. Busca em tempo real
-    4. Modal de detalhes com galeria de fotos
+  
+  SISTEMA DE TEMAS:
+  - Lê o tema salvo no localStorage ao carregar
+  - Aplica via data-theme no <html>
+  - Botão #btnTema alterna entre "dark" e "light"
+  - Preferência persiste entre visitas
   ============================================================
 */
+
+/* ============================================================
+   GERENCIAMENTO DE TEMA DARK / LIGHT
+============================================================ */
+
+/**
+ * Aplica o tema ao atributo data-theme do <html>.
+ * O CSS detecta esse atributo e troca todas as variáveis.
+ */
+function aplicarTema(tema) {
+  document.documentElement.setAttribute("data-theme", tema);
+  localStorage.setItem("ADGVEICULOS_tema", tema);
+}
+
+/**
+ * Alterna entre "dark" e "light" ao clicar no botão.
+ * A animação "themePop" é adicionada e removida via classe
+ * para disparar o keyframe a cada clique.
+ */
+function alternarTema() {
+  const atual = document.documentElement.getAttribute("data-theme") || "dark";
+  const novo  = atual === "dark" ? "light" : "dark";
+
+  // Dispara animação no ícone
+  const btn = document.getElementById("btnTema");
+  btn.classList.remove("btn-tema-pop");
+  void btn.offsetWidth; // force reflow para reiniciar a animação
+  btn.classList.add("btn-tema-pop");
+
+  aplicarTema(novo);
+}
+
+// Aplica o tema salvo ANTES de qualquer renderização
+// (colocado no topo para evitar flash de tema errado)
+(function () {
+  const temaSalvo = localStorage.getItem("ADGVEICULOS_tema") || "dark";
+  document.documentElement.setAttribute("data-theme", temaSalvo);
+})();
 
 /* ============================================================
    CHAVE DO LOCALSTORAGE
@@ -223,5 +262,11 @@ document.addEventListener("DOMContentLoaded", function () {
   // Busca em tempo real
   document.getElementById("campoBusca").addEventListener("input", filtrarVeiculos);
 
-  console.log("✅ ADGVEICULOS inicializado. Dados lidos do localStorage.");
+  // Botão de alternância de tema
+  const btnTema = document.getElementById("btnTema");
+  if (btnTema) {
+    btnTema.addEventListener("click", alternarTema);
+  }
+
+  console.log("✅ ADGveiculos inicializado. Dados lidos do localStorage.");
 });
